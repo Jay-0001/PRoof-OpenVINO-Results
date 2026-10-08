@@ -1,0 +1,2114 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <title>PRoof dataviewer</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+
+    <link href="assets/common.css" rel="stylesheet">
+  </head>
+  <body>
+
+<header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
+  <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3 fs-6" href="#">PRoof dataviewer</a>
+  <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <span class="navbar-text ms-4 me-md-4 me-auto">
+    Model: resnet-v1-50.onnx
+  </span>
+  <!-- <input class="form-control form-control-dark w-100 rounded-0 border-0" type="text" placeholder="Search" aria-label="Search"> -->
+</header>
+
+<div class="container-fluid">
+  <div class="row">
+    <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+      <div class="position-sticky pt-3 sidebar-sticky">
+        <ul class="nav flex-column">
+          <li class="nav-item">
+            <a class="nav-link" href="index.html">
+              <span data-feather="home" class="align-text-bottom"></span>
+              Summary
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="model.html">
+              <span data-feather="file" class="align-text-bottom"></span>
+              Model analyze
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link disabled" href="#">
+              <span data-feather="bar-chart-2" class="align-text-bottom"></span>
+              End-to-end performance
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="layer-1.html">
+              <span data-feather="layers" class="align-text-bottom"></span>
+              Layer performance
+            </a>
+          </li>
+        </ul>
+
+        <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted text-uppercase">
+          <span>batch size</span>
+        </h6>
+        <ul class="nav flex-column mb-2">
+          
+            <li class="nav-item">
+              <a class="nav-link active"
+                href="layer-1.html">
+                <span data-feather="grid" class="align-text-bottom"></span>
+               1
+              </a>
+            </li>
+          
+        </ul>
+      </div>
+    </nav>
+
+    <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+      <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2">Layer performance</h1>
+        <div class="btn-toolbar mb-2 mb-md-0">
+          <pre class="mb-0">batch_size = 1</pre>
+        </div>
+      </div>
+
+      <h2 class="h4">Roofline chart</h2>
+      <canvas class="w-100" id="roofline-chart" width="900" height="380"></canvas>
+      <div class="mb-4">
+        <div>Coordinate axis type:</div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="chart-axis-type" id="chart-axis-type-linear" value="linear" autocomplete="off" checked
+            onclick="chart_set_axis(chart, 'linear')">
+          <label class="form-check-label" for="chart-axis-type-linear">Linear</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="chart-axis-type" id="chart-axis-type-logarithmic" value="logarithmic" autocomplete="off"
+            onclick="chart_set_axis(chart, 'logarithmic')">
+          <label class="form-check-label" for="chart-axis-type-logarithmic">Logarithmic</label>
+        </div>
+      </div>
+
+
+      <h2 class="h4">Layer details</h2>
+      <div class="table-responsive">
+        <table class="table table-striped table-sm font-monospace">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Name</th>
+              <th scope="col" class="text-end">Median time (ms)</th>
+              <th scope="col" class="text-end">Percentage</th>
+              <th scope="col" class="text-end">Effective GFLOPS</th>
+              <th scope="col" class="text-end">Memory bandwidth (GB/s)</th>
+              <th scope="col" class="text-end">FLOPs</th>
+              <th scope="col" class="text-end">Memory I/O</th>
+              <th scope="col p-0" class="text-end"></th>
+            </tr>
+          </thead>
+          <tbody>
+            
+              <tr>
+                <th>1</th>
+                <td>/avgpool/GlobalAveragePool</td>
+                <td class="text-end">0.009000</td>
+                <td class="text-end">0.19%</td>
+                <td class="text-end">11.377778</td>
+                <td class="text-end">22.755556</td>
+                <td class="text-end">0.102 M</td>
+                <td class="text-end">0.205 MB</td>
+                
+                  <td class="text-end">
+                    <a data-bs-toggle="collapse" href="#layers-1-extra" role="button" aria-expanded="false" aria-controls="layers-1-extra">More</a>
+                  </td>
+                
+              </tr>
+              
+                <tr></tr>
+                <tr>
+                  <th class="p-0"></th>
+                  <td class="p-0"colspan="8"><div class="collapse" id="layers-1-extra"><small>{&#39;onnx_nodes&#39;: [&#39;/avgpool/GlobalAveragePool&#39;], &#39;ov_exec_type&#39;: &#39;reduce_gpu_b_fs_yx_fsv16__f16&#39;}</small></div></td>
+                </tr>
+              
+            
+              <tr>
+                <th>2</th>
+                <td>/conv1/Conv/WithoutBiases</td>
+                <td class="text-end">0.235000</td>
+                <td class="text-end">4.94%</td>
+                <td class="text-end">1007.790298</td>
+                <td class="text-end">8.194179</td>
+                <td class="text-end">236.831 M</td>
+                <td class="text-end">1.926 MB</td>
+                
+                  <td class="text-end">
+                    <a data-bs-toggle="collapse" href="#layers-2-extra" role="button" aria-expanded="false" aria-controls="layers-2-extra">More</a>
+                  </td>
+                
+              </tr>
+              
+                <tr></tr>
+                <tr>
+                  <th class="p-0"></th>
+                  <td class="p-0"colspan="8"><div class="collapse" id="layers-2-extra"><small>{&#39;onnx_nodes&#39;: [&#39;/conv1/Conv&#39;], &#39;ov_exec_type&#39;: &#39;convolution_gpu_bfyx_to_bfyx_f16__f16&#39;}</small></div></td>
+                </tr>
+              
+            
+              <tr>
+                <th>3</th>
+                <td>/fc/Gemm/WithoutBiases</td>
+                <td class="text-end">0.076000</td>
+                <td class="text-end">1.60%</td>
+                <td class="text-end">53.907895</td>
+                <td class="text-end">54.001263</td>
+                <td class="text-end">4.097 M</td>
+                <td class="text-end">4.104 MB</td>
+                
+                  <td class="text-end">
+                    <a data-bs-toggle="collapse" href="#layers-3-extra" role="button" aria-expanded="false" aria-controls="layers-3-extra">More</a>
+                  </td>
+                
+              </tr>
+              
+                <tr></tr>
+                <tr>
+                  <th class="p-0"></th>
+                  <td class="p-0"colspan="8"><div class="collapse" id="layers-3-extra"><small>{&#39;onnx_nodes&#39;: [&#39;/fc/Gemm&#39;], &#39;ov_exec_type&#39;: &#39;fully_connected_gpu_bf_io_gemm__f16&#39;}</small></div></td>
+                </tr>
+              
+            
+              <tr>
+                <th>4</th>
+                <td>/layer1/layer1.0/conv1/Conv/WithoutBiases</td>
+                <td class="text-end">0.025000</td>
+                <td class="text-end">0.53%</td>
+                <td class="text-end">1035.632640</td>
+                <td class="text-end">32.445440</td>
+                <td class="text-end">25.891 M</td>
+                <td class="text-end">0.811 MB</td>
+                
+                  <td class="text-end">
+                    <a data-bs-toggle="collapse" href="#layers-4-extra" role="button" aria-expanded="false" aria-controls="layers-4-extra">More</a>
+                  </td>
+                
+              </tr>
+              
+                <tr></tr>
+                <tr>
+                  <th class="p-0"></th>
+                  <td class="p-0"colspan="8"><div class="collapse" id="layers-4-extra"><small>{&#39;onnx_nodes&#39;: [&#39;/layer1/layer1.0/conv1/Conv&#39;], &#39;ov_exec_type&#39;: &#39;convolution_gpu_bfyx_f16__f16&#39;}</small></div></td>
+                </tr>
+              
+            
+              <tr>
+                <th>5</th>
+                <td>/layer1/layer1.0/conv2/Conv/WithoutBiases</td>
+                <td class="text-end">0.105000</td>
+                <td class="text-end">2.21%</td>
+                <td class="text-end">2203.921067</td>
+                <td class="text-end">8.349257</td>
+                <td class="text-end">231.412 M</td>
+                <td class="text-end">0.877 MB</td>
+                
+                  <td class="text-end">
+                    <a data-bs-toggle="collapse" href="#layers-5-extra" role="button" aria-expanded="false" aria-controls="layers-5-extra">More</a>
+                  </td>
+                
+              </tr>
+              
+                <tr></tr>
+                <tr>
+                  <th class="p-0"></th>
+                  <td class="p-0"colspan="8"><div class="collapse" id="layers-5-extra"><small>{&#39;onnx_nodes&#39;: [&#39;/layer1/layer1.0/conv2/Conv&#39;], &#39;ov_exec_type&#39;: &#39;convolution_gpu_bfyx_f16__f16&#39;}</small></div></td>
+                </tr>
+              
+            
+              <tr>
+                <th>6</th>
+                <td>/layer1/layer1.0/conv3/Conv/WithoutBiases</td>
+                <td class="text-end">0.077000</td>
+                <td class="text-end">1.62%</td>
+                <td class="text-end">1344.977455</td>
+                <td class="text-end">26.497662</td>
+                <td class="text-end">103.563 M</td>
+                <td class="text-end">2.040 MB</td>
+                
+                  <td class="text-end">
+                    <a data-bs-toggle="collapse" href="#layers-6-extra" role="button" aria-expanded="false" aria-controls="layers-6-extra">More</a>
+                  </td>
+                
+              </tr>
+              
+                <tr></tr>
+                <tr>
+                  <th class="p-0"></th>
+                  <td class="p-0"colspan="8"><div class="collapse" id="layers-6-extra"><small>{&#39;onnx_nodes&#39;: [&#39;/layer1/layer1.0/conv3/Conv&#39;], &#39;ov_exec_type&#39;: &#39;convolution_gpu_bfyx_f16_1x1__f16&#39;}</small></div></td>
+                </tr>
+              
+            
+              <tr>
+                <th>7</th>
+                <td>/layer1/layer1.0/downsample/downsample.0/Conv/WithoutBiases</td>
+                <td class="text-end">0.068000</td>
+                <td class="text-end">1.43%</td>
+                <td class="text-end">1522.989176</td>
+                <td class="text-end">30.004706</td>
+                <td class="text-end">103.563 M</td>
+                <td class="text-end">2.040 MB</td>
+                
+                  <td class="text-end">
+                    <a data-bs-toggle="collapse" href="#layers-7-extra" role="button" aria-expanded="false" aria-controls="layers-7-extra">More</a>
+                  </td>
+                
+              </tr>
+              
+                <tr></tr>
+                <tr>
+                  <th class="p-0"></th>
+                  <td class="p-0"colspan="8"><div class="collapse" id="layers-7-extra"><small>{&#39;onnx_nodes&#39;: [&#39;/layer1/layer1.0/downsample/downsample.0/Conv&#39;], &#39;ov_exec_type&#39;: &#39;convolution_gpu_bfyx_f16_1x1__f16&#39;}</small></div></td>
+                </tr>
+              
+            
+              <tr>
+                <th>8</th>
+                <td>/layer1/layer1.1/conv1/Conv/WithoutBiases</td>
+                <td class="text-end">0.065000</td>
+                <td class="text-end">1.37%</td>
+                <td class="text-end">1584.017723</td>
+                <td class="text-end">31.383631</td>
+                <td class="text-end">102.961 M</td>
+                <td class="text-end">2.040 MB</td>
+                
+                  <td class="text-end">
+                    <a data-bs-toggle="collapse" href="#layers-8-extra" role="button" aria-expanded="false" aria-controls="layers-8-extra">More</a>
+                  </td>
+                
+              </tr>
+              
+                <tr></tr>
+                <tr>
+                  <th class="p-0"></th>
+                  <td class="p-0"colspan="8"><div class="collapse" id="layers-8-extra"><small>{&#39;onnx_nodes&#39;: [&#39;/layer1/layer1.1/conv1/Conv&#39;], &#39;ov_exec_type&#39;: &#39;convolution_gpu_bfyx_f16__f16&#39;}</small></div></td>
+                </tr>
+              
+            
+              <tr>
+                <th>9</th>
+                <td>/layer1/layer1.1/conv2/Conv/WithoutBiases</td>
+                <td class="text-end">0.088000</td>
+                <td class="text-end">1.85%</td>
+                <td class="text-end">2629.678545</td>
+                <td class="text-end">9.962182</td>
+                <td class="text-end">231.412 M</td>
+                <td class="text-end">0.877 MB</td>
+                
+                  <td class="text-end">
+                    <a data-bs-toggle="collapse" href="#layers-9-extra" role="button" aria-expanded="false" aria-controls="layers-9-extra">More</a>
+                  </td>
+                
+              </tr>
+              
+                <tr></tr>
+                <tr>
+                  <th class="p-0"></th>
+                  <td class="p-0"colspan="8"><div class="collapse" id="layers-9-extra"><small>{&#39;onnx_nodes&#39;: [&#39;/layer1/layer1.1/conv2/Conv&#39;], &#39;ov_exec_type&#39;: &#39;convolution_gpu_bfyx_f16__f16&#39;}</small></div></td>
+                </tr>
+              
+            
+              <tr>
+                <th>10</th>
+                <td>/layer1/layer1.1/conv3/Conv/WithoutBiases</td>
+                <td class="text-end">0.067000</td>
+                <td class="text-end">1.41%</td>
+                <td class="text-end">1545.720358</td>
+                <td class="text-end">30.452537</td>
+                <td class="text-end">103.563 M</td>
+                <td class="text-end">2.040 MB</td>
+                
+                  <td class="text-end">
+                    <a data-bs-toggle="collapse" href="#layers-10-extra" role="button" aria-expanded="false" aria-controls="layers-10-extra">More</a>
+                  </td>
+                
+              </tr>
+              
+                <tr></tr>
+                <tr>
+                  <th class="p-0"></th>
+                  <td class="p-0"colspan="8"><div class="collapse" id="layers-10-extra"><small>{&#39;onnx_nodes&#39;: [&#39;/layer1/layer1.1/conv3/Conv&#39;], &#39;ov_exec_type&#39;: &#39;convolution_gpu_bfyx_f16_1x1__f16&#39;}</small></div></td>
+                </tr>
+              
+            
+              <tr>
+                <th>11</th>
+                <td>/layer1/layer1.2/conv1/Conv/WithoutBiases</td>
+                <td class="text-end">0.059000</td>
+                <td class="text-end">1.24%</td>
+                <td class="text-end">1745.104271</td>
+                <td class="text-end">34.575186</td>
+                <td class="text-end">102.961 M</td>
+                <td class="text-end">2.040 MB</td>
+                
+                  <td class="text-end">
+                    <a data-bs-toggle="collapse" href="#layers-11-extra" role="button" aria-expanded="false" aria-controls="layers-11-extra">More</a>
+                  </td>
+                
+              </tr>
+              
+                <tr></tr>
+                <tr>
+                  <th class="p-0"></th>
+                  <td class="p-0"colspan="8"><div class="collapse" id="layers-11-extra"><small>{&#39;onnx_nodes&#39;: [&#39;/layer1/layer1.2/conv1/Conv&#39;], &#39;ov_exec_type&#39;: &#39;convolution_gpu_bfyx_f16__f16&#39;}</small></div></td>
+                </tr>
+              
+            
+              <tr>
+                <th>12</th>
+                <td>/layer1/layer1.2/conv2/Conv/WithoutBiases</td>
+                <td class="text-end">0.086000</td>
+                <td class="text-end">1.81%</td>
+                <td class="text-end">2690.833860</td>
+                <td class="text-end">10.193860</td>
+                <td class="text-end">231.412 M</td>
+                <td class="text-end">0.877 MB</td>
+                
+                  <td class="text-end">
+                    <a data-bs-toggle="collapse" href="#layers-12-extra" role="button" aria-expanded="false" aria-controls="layers-12-extra">More</a>
+                  </td>
+                
+              </tr>
+              
+                <tr></tr>
+                <tr>
+                  <th class="p-0"></th>
+                  <td class="p-0"colspan="8"><div class="collapse" id="layers-12-extra"><small>{&#39;onnx_nodes&#39;: [&#39;/layer1/layer1.2/conv2/Conv&#39;], &#39;ov_exec_type&#39;: &#39;convolution_gpu_bfyx_f16__f16&#39;}</small></div></td>
+                </tr>
+              
+            
+              <tr>
+                <th>13</th>
+                <td>/layer1/layer1.2/conv3/Conv/WithoutBiases</td>
+                <td class="text-end">0.068000</td>
+                <td class="text-end">1.43%</td>
+                <td class="text-end">1522.989176</td>
+                <td class="text-end">30.004706</td>
+                <td class="text-end">103.563 M</td>
+                <td class="text-end">2.040 MB</td>
+                
+                  <td class="text-end">
+                    <a data-bs-toggle="collapse" href="#layers-13-extra" role="button" aria-expanded="false" aria-controls="layers-13-extra">More</a>
+                  </td>
+                
+              </tr>
+              
+                <tr></tr>
+                <tr>
+                  <th class="p-0"></th>
+                  <td class="p-0"colspan="8"><div class="collapse" id="layers-13-extra"><small>{&#39;onnx_nodes&#39;: [&#39;/layer1/layer1.2/conv3/Conv&#39;], &#39;ov_exec_type&#39;: &#39;convolution_gpu_bfyx_f16_1x1__f16&#39;}</small></div></td>
+                </tr>
+              
+            
+              <tr>
+                <th>14</th>
+                <td>/layer2/layer2.0/conv1/Conv/WithoutBiases</td>
+                <td class="text-end">0.108000</td>
+                <td class="text-end">2.27%</td>
+                <td class="text-end">1906.688000</td>
+                <td class="text-end">22.909630</td>
+                <td class="text-end">205.922 M</td>
+                <td class="text-end">2.474 MB</td>
+                
+                  <td class="text-end">
+                    <a data-bs-toggle="collapse" href="#layers-14-extra" role="button" aria-expanded="false" aria-controls="layers-14-extra">More</a>
+                  </td>
+                
+              </tr>
+              
+                <tr></tr>
+                <tr>
+                  <th class="p-0"></th>
+                  <td class="p-0"colspan="8"><div class="collapse" id="layers-14-extra"><small>{&#39;onnx_nodes&#39;: [&#39;/layer2/layer2.0/conv1/Conv&#39;], &#39;ov_exec_type&#39;: &#39;convolution_gpu_bfyx_f16_1x1__f16&#39;}</small></div></td>
+                </tr>
+              
+            
+              <tr>
+                <th>15</th>
+                <td>/layer2/layer2.0/conv2/Conv/WithoutBiases</td>
+                <td class="text-end">0.120000</td>
+                <td class="text-end">2.52%</td>
+                <td class="text-end">1927.594667</td>
+                <td class="text-end">10.822400</td>
+                <td class="text-end">231.311 M</td>
+                <td class="text-end">1.299 MB</td>
+                
+                  <td class="text-end">
+                    <a data-bs-toggle="collapse" href="#layers-15-extra" role="button" aria-expanded="false" aria-controls="layers-15-extra">More</a>
+                  </td>
+                
+              </tr>
+              
+                <tr></tr>
+                <tr>
+                  <th class="p-0"></th>
+                  <td class="p-0"colspan="8"><div class="collapse" id="layers-15-extra"><small>{&#39;onnx_nodes&#39;: [&#39;/layer2/layer2.0/conv2/Conv&#39;], &#39;ov_exec_type&#39;: &#39;convolution_gpu_bfyx_f16__f16&#39;}</small></div></td>
+                </tr>
+              
+            
+              <tr>
+                <th>16</th>
+                <td>/layer2/layer2.0/conv3/Conv/WithoutBiases</td>
+                <td class="text-end">0.070000</td>
+                <td class="text-end">1.47%</td>
+                <td class="text-end">1473.740800</td>
+                <td class="text-end">16.223086</td>
+                <td class="text-end">103.162 M</td>
+                <td class="text-end">1.136 MB</td>
+                
+                  <td class="text-end">
+                    <a data-bs-toggle="collapse" href="#layers-16-extra" role="button" aria-expanded="false" aria-controls="layers-16-extra">More</a>
+                  </td>
+                
+              </tr>
+              
+                <tr></tr>
+                <tr>
+                  <th class="p-0"></th>
+                  <td class="p-0"colspan="8"><div class="collapse" id="layers-16-extra"><small>{&#39;onnx_nodes&#39;: [&#39;/layer2/layer2.0/conv3/Conv&#39;], &#39;ov_exec_type&#39;: &#39;convolution_gpu_bfyx_f16_1x1__f16&#39;}</small></div></td>
+                </tr>
+              
+            
+              <tr>
+                <th>17</th>
+                <td>/layer2/layer2.0/downsample/downsample.0/Conv/WithoutBiases</td>
+                <td class="text-end">0.155000</td>
+                <td class="text-end">3.26%</td>
+                <td class="text-end">1328.530994</td>
+                <td class="text-end">9.467045</td>
+                <td class="text-end">205.922 M</td>
+                <td class="text-end">1.467 MB</td>
+                
+                  <td class="text-end">
+                    <a data-bs-toggle="collapse" href="#layers-17-extra" role="button" aria-expanded="false" aria-controls="layers-17-extra">More</a>
+                  </td>
+                
+              </tr>
+              
+                <tr></tr>
+                <tr>
+                  <th class="p-0"></th>
+                  <td class="p-0"colspan="8"><div class="collapse" id="layers-17-extra"><small>{&#39;onnx_nodes&#39;: [&#39;/layer2/layer2.0/downsample/downsample.0/Conv&#39;], &#39;ov_exec_type&#39;: &#39;convolution_gpu_bfyx_f16__f16&#39;}</small></div></td>
+                </tr>
+              
+            
+              <tr>
+                <th>18</th>
+                <td>/layer2/layer2.1/conv1/Conv/WithoutBiases</td>
+                <td class="text-end">0.058000</td>
+                <td class="text-end">1.22%</td>
+                <td class="text-end">1773.462069</td>
+                <td class="text-end">19.566345</td>
+                <td class="text-end">102.861 M</td>
+                <td class="text-end">1.135 MB</td>
+                
+                  <td class="text-end">
+                    <a data-bs-toggle="collapse" href="#layers-18-extra" role="button" aria-expanded="false" aria-controls="layers-18-extra">More</a>
+                  </td>
+                
+              </tr>
+              
+                <tr></tr>
+                <tr>
+                  <th class="p-0"></th>
+                  <td class="p-0"colspan="8"><div class="collapse" id="layers-18-extra"><small>{&#39;onnx_nodes&#39;: [&#39;/layer2/layer2.1/conv1/Conv&#39;], &#39;ov_exec_type&#39;: &#39;convolution_gpu_bfyx_f16_1x1__f16&#39;}</small></div></td>
+                </tr>
+              
+            
+              <tr>
+                <th>19</th>
+                <td>/layer2/layer2.1/conv2/Conv/WithoutBiases</td>
+                <td class="text-end">0.112000</td>
+                <td class="text-end">2.35%</td>
+                <td class="text-end">2065.280000</td>
+                <td class="text-end">6.219429</td>
+                <td class="text-end">231.311 M</td>
+                <td class="text-end">0.697 MB</td>
+                
+                  <td class="text-end">
+                    <a data-bs-toggle="collapse" href="#layers-19-extra" role="button" aria-expanded="false" aria-controls="layers-19-extra">More</a>
+                  </td>
+                
+              </tr>
+              
+                <tr></tr>
+                <tr>
+                  <th class="p-0"></th>
+                  <td class="p-0"colspan="8"><div class="collapse" id="layers-19-extra"><small>{&#39;onnx_nodes&#39;: [&#39;/layer2/layer2.1/conv2/Conv&#39;], &#39;ov_exec_type&#39;: &#39;convolution_gpu_bfyx_f16__f16&#39;}</small></div></td>
+                </tr>
+              
+            
+              <tr>
+                <th>20</th>
+                <td>/layer2/layer2.1/conv3/Conv/WithoutBiases</td>
+                <td class="text-end">0.064000</td>
+                <td class="text-end">1.35%</td>
+                <td class="text-end">1611.904000</td>
+                <td class="text-end">17.744000</td>
+                <td class="text-end">103.162 M</td>
+                <td class="text-end">1.136 MB</td>
+                
+                  <td class="text-end">
+                    <a data-bs-toggle="collapse" href="#layers-20-extra" role="button" aria-expanded="false" aria-controls="layers-20-extra">More</a>
+                  </td>
+                
+              </tr>
+              
+                <tr></tr>
+                <tr>
+                  <th class="p-0"></th>
+                  <td class="p-0"colspan="8"><div class="collapse" id="layers-20-extra"><small>{&#39;onnx_nodes&#39;: [&#39;/layer2/layer2.1/conv3/Conv&#39;], &#39;ov_exec_type&#39;: &#39;convolution_gpu_bfyx_f16_1x1__f16&#39;}</small></div></td>
+                </tr>
+              
+            
+              <tr>
+                <th>21</th>
+                <td>/layer2/layer2.2/conv1/Conv/WithoutBiases</td>
+                <td class="text-end">0.052000</td>
+                <td class="text-end">1.09%</td>
+                <td class="text-end">1978.092308</td>
+                <td class="text-end">21.824000</td>
+                <td class="text-end">102.861 M</td>
+                <td class="text-end">1.135 MB</td>
+                
+                  <td class="text-end">
+                    <a data-bs-toggle="collapse" href="#layers-21-extra" role="button" aria-expanded="false" aria-controls="layers-21-extra">More</a>
+                  </td>
+                
+              </tr>
+              
+                <tr></tr>
+                <tr>
+                  <th class="p-0"></th>
+                  <td class="p-0"colspan="8"><div class="collapse" id="layers-21-extra"><small>{&#39;onnx_nodes&#39;: [&#39;/layer2/layer2.2/conv1/Conv&#39;], &#39;ov_exec_type&#39;: &#39;convolution_gpu_bfyx_f16_1x1__f16&#39;}</small></div></td>
+                </tr>
+              
+            
+              <tr>
+                <th>22</th>
+                <td>/layer2/layer2.2/conv2/Conv/WithoutBiases</td>
+                <td class="text-end">0.095000</td>
+                <td class="text-end">2.00%</td>
+                <td class="text-end">2434.856421</td>
+                <td class="text-end">7.332379</td>
+                <td class="text-end">231.311 M</td>
+                <td class="text-end">0.697 MB</td>
+                
+                  <td class="text-end">
+                    <a data-bs-toggle="collapse" href="#layers-22-extra" role="button" aria-expanded="false" aria-controls="layers-22-extra">More</a>
+                  </td>
+                
+              </tr>
+              
+                <tr></tr>
+                <tr>
+                  <th class="p-0"></th>
+                  <td class="p-0"colspan="8"><div class="collapse" id="layers-22-extra"><small>{&#39;onnx_nodes&#39;: [&#39;/layer2/layer2.2/conv2/Conv&#39;], &#39;ov_exec_type&#39;: &#39;convolution_gpu_bfyx_f16__f16&#39;}</small></div></td>
+                </tr>
+              
+            
+              <tr>
+                <th>23</th>
+                <td>/layer2/layer2.2/conv3/Conv/WithoutBiases</td>
+                <td class="text-end">0.063000</td>
+                <td class="text-end">1.32%</td>
+                <td class="text-end">1637.489778</td>
+                <td class="text-end">18.025651</td>
+                <td class="text-end">103.162 M</td>
+                <td class="text-end">1.136 MB</td>
+                
+                  <td class="text-end">
+                    <a data-bs-toggle="collapse" href="#layers-23-extra" role="button" aria-expanded="false" aria-controls="layers-23-extra">More</a>
+                  </td>
+                
+              </tr>
+              
+                <tr></tr>
+                <tr>
+                  <th class="p-0"></th>
+                  <td class="p-0"colspan="8"><div class="collapse" id="layers-23-extra"><small>{&#39;onnx_nodes&#39;: [&#39;/layer2/layer2.2/conv3/Conv&#39;], &#39;ov_exec_type&#39;: &#39;convolution_gpu_bfyx_f16_1x1__f16&#39;}</small></div></td>
+                </tr>
+              
+            
+              <tr>
+                <th>24</th>
+                <td>/layer2/layer2.3/conv1/Conv/WithoutBiases</td>
+                <td class="text-end">0.051000</td>
+                <td class="text-end">1.07%</td>
+                <td class="text-end">2016.878431</td>
+                <td class="text-end">22.251922</td>
+                <td class="text-end">102.861 M</td>
+                <td class="text-end">1.135 MB</td>
+                
+                  <td class="text-end">
+                    <a data-bs-toggle="collapse" href="#layers-24-extra" role="button" aria-expanded="false" aria-controls="layers-24-extra">More</a>
+                  </td>
+                
+              </tr>
+              
+                <tr></tr>
+                <tr>
+                  <th class="p-0"></th>
+                  <td class="p-0"colspan="8"><div class="collapse" id="layers-24-extra"><small>{&#39;onnx_nodes&#39;: [&#39;/layer2/layer2.3/conv1/Conv&#39;], &#39;ov_exec_type&#39;: &#39;convolution_gpu_bfyx_f16_1x1__f16&#39;}</small></div></td>
+                </tr>
+              
+            
+              <tr>
+                <th>25</th>
+                <td>/layer2/layer2.3/conv2/Conv/WithoutBiases</td>
+                <td class="text-end">0.094000</td>
+                <td class="text-end">1.98%</td>
+                <td class="text-end">2460.759149</td>
+                <td class="text-end">7.410383</td>
+                <td class="text-end">231.311 M</td>
+                <td class="text-end">0.697 MB</td>
+                
+                  <td class="text-end">
+                    <a data-bs-toggle="collapse" href="#layers-25-extra" role="button" aria-expanded="false" aria-controls="layers-25-extra">More</a>
+                  </td>
+                
+              </tr>
+              
+                <tr></tr>
+                <tr>
+                  <th class="p-0"></th>
+                  <td class="p-0"colspan="8"><div class="collapse" id="layers-25-extra"><small>{&#39;onnx_nodes&#39;: [&#39;/layer2/layer2.3/conv2/Conv&#39;], &#39;ov_exec_type&#39;: &#39;convolution_gpu_bfyx_f16__f16&#39;}</small></div></td>
+                </tr>
+              
+            
+              <tr>
+                <th>26</th>
+                <td>/layer2/layer2.3/conv3/Conv/WithoutBiases</td>
+                <td class="text-end">0.062000</td>
+                <td class="text-end">1.30%</td>
+                <td class="text-end">1663.900903</td>
+                <td class="text-end">18.316387</td>
+                <td class="text-end">103.162 M</td>
+                <td class="text-end">1.136 MB</td>
+                
+                  <td class="text-end">
+                    <a data-bs-toggle="collapse" href="#layers-26-extra" role="button" aria-expanded="false" aria-controls="layers-26-extra">More</a>
+                  </td>
+                
+              </tr>
+              
+                <tr></tr>
+                <tr>
+                  <th class="p-0"></th>
+                  <td class="p-0"colspan="8"><div class="collapse" id="layers-26-extra"><small>{&#39;onnx_nodes&#39;: [&#39;/layer2/layer2.3/conv3/Conv&#39;], &#39;ov_exec_type&#39;: &#39;convolution_gpu_bfyx_f16_1x1__f16&#39;}</small></div></td>
+                </tr>
+              
+            
+              <tr>
+                <th>27</th>
+                <td>/layer3/layer3.0/conv1/Conv/WithoutBiases</td>
+                <td class="text-end">0.123000</td>
+                <td class="text-end">2.59%</td>
+                <td class="text-end">1672.533333</td>
+                <td class="text-end">11.925854</td>
+                <td class="text-end">205.722 M</td>
+                <td class="text-end">1.467 MB</td>
+                
+                  <td class="text-end">
+                    <a data-bs-toggle="collapse" href="#layers-27-extra" role="button" aria-expanded="false" aria-controls="layers-27-extra">More</a>
+                  </td>
+                
+              </tr>
+              
+                <tr></tr>
+                <tr>
+                  <th class="p-0"></th>
+                  <td class="p-0"colspan="8"><div class="collapse" id="layers-27-extra"><small>{&#39;onnx_nodes&#39;: [&#39;/layer3/layer3.0/conv1/Conv&#39;], &#39;ov_exec_type&#39;: &#39;convolution_gpu_bfyx_f16__f16&#39;}</small></div></td>
+                </tr>
+              
+            
+              <tr>
+                <th>28</th>
+                <td>/layer3/layer3.0/conv2/Conv/WithoutBiases</td>
+                <td class="text-end">0.120000</td>
+                <td class="text-end">2.52%</td>
+                <td class="text-end">1927.176533</td>
+                <td class="text-end">14.016000</td>
+                <td class="text-end">231.261 M</td>
+                <td class="text-end">1.682 MB</td>
+                
+                  <td class="text-end">
+                    <a data-bs-toggle="collapse" href="#layers-28-extra" role="button" aria-expanded="false" aria-controls="layers-28-extra">More</a>
+                  </td>
+                
+              </tr>
+              
+                <tr></tr>
+                <tr>
+                  <th class="p-0"></th>
+                  <td class="p-0"colspan="8"><div class="collapse" id="layers-28-extra"><small>{&#39;onnx_nodes&#39;: [&#39;/layer3/layer3.0/conv2/Conv&#39;], &#39;ov_exec_type&#39;: &#39;convolution_gpu_bfyx_f16__f16&#39;}</small></div></td>
+                </tr>
+              
+            
+              <tr>
+                <th>29</th>
+                <td>/layer3/layer3.0/conv3/Conv/WithoutBiases</td>
+                <td class="text-end">0.073000</td>
+                <td class="text-end">1.53%</td>
+                <td class="text-end">1410.426740</td>
+                <td class="text-end">14.083507</td>
+                <td class="text-end">102.961 M</td>
+                <td class="text-end">1.028 MB</td>
+                
+                  <td class="text-end">
+                    <a data-bs-toggle="collapse" href="#layers-29-extra" role="button" aria-expanded="false" aria-controls="layers-29-extra">More</a>
+                  </td>
+                
+              </tr>
+              
+                <tr></tr>
+                <tr>
+                  <th class="p-0"></th>
+                  <td class="p-0"colspan="8"><div class="collapse" id="layers-29-extra"><small>{&#39;onnx_nodes&#39;: [&#39;/layer3/layer3.0/conv3/Conv&#39;], &#39;ov_exec_type&#39;: &#39;convolution_gpu_bfyx_f16_1x1__f16&#39;}</small></div></td>
+                </tr>
+              
+            
+              <tr>
+                <th>30</th>
+                <td>/layer3/layer3.0/downsample/downsample.0/Conv/WithoutBiases</td>
+                <td class="text-end">0.149000</td>
+                <td class="text-end">3.13%</td>
+                <td class="text-end">1380.681879</td>
+                <td class="text-end">11.092188</td>
+                <td class="text-end">205.722 M</td>
+                <td class="text-end">1.653 MB</td>
+                
+                  <td class="text-end">
+                    <a data-bs-toggle="collapse" href="#layers-30-extra" role="button" aria-expanded="false" aria-controls="layers-30-extra">More</a>
+                  </td>
+                
+              </tr>
+              
+                <tr></tr>
+                <tr>
+                  <th class="p-0"></th>
+                  <td class="p-0"colspan="8"><div class="collapse" id="layers-30-extra"><small>{&#39;onnx_nodes&#39;: [&#39;/layer3/layer3.0/downsample/downsample.0/Conv&#39;], &#39;ov_exec_type&#39;: &#39;convolution_gpu_bfyx_f16__f16&#39;}</small></div></td>
+                </tr>
+              
+            
+              <tr>
+                <th>31</th>
+                <td>/layer3/layer3.1/conv1/Conv/WithoutBiases</td>
+                <td class="text-end">0.059000</td>
+                <td class="text-end">1.24%</td>
+                <td class="text-end">1742.552949</td>
+                <td class="text-end">17.399322</td>
+                <td class="text-end">102.811 M</td>
+                <td class="text-end">1.027 MB</td>
+                
+                  <td class="text-end">
+                    <a data-bs-toggle="collapse" href="#layers-31-extra" role="button" aria-expanded="false" aria-controls="layers-31-extra">More</a>
+                  </td>
+                
+              </tr>
+              
+                <tr></tr>
+                <tr>
+                  <th class="p-0"></th>
+                  <td class="p-0"colspan="8"><div class="collapse" id="layers-31-extra"><small>{&#39;onnx_nodes&#39;: [&#39;/layer3/layer3.1/conv1/Conv&#39;], &#39;ov_exec_type&#39;: &#39;convolution_gpu_bfyx_f16_1x1__f16&#39;}</small></div></td>
+                </tr>
+              
+            
+              <tr>
+                <th>32</th>
+                <td>/layer3/layer3.1/conv2/Conv/WithoutBiases</td>
+                <td class="text-end">0.109000</td>
+                <td class="text-end">2.29%</td>
+                <td class="text-end">2121.662239</td>
+                <td class="text-end">12.668477</td>
+                <td class="text-end">231.261 M</td>
+                <td class="text-end">1.381 MB</td>
+                
+                  <td class="text-end">
+                    <a data-bs-toggle="collapse" href="#layers-32-extra" role="button" aria-expanded="false" aria-controls="layers-32-extra">More</a>
+                  </td>
+                
+              </tr>
+              
+                <tr></tr>
+                <tr>
+                  <th class="p-0"></th>
+                  <td class="p-0"colspan="8"><div class="collapse" id="layers-32-extra"><small>{&#39;onnx_nodes&#39;: [&#39;/layer3/layer3.1/conv2/Conv&#39;], &#39;ov_exec_type&#39;: &#39;convolution_gpu_bfyx_f16__f16&#39;}</small></div></td>
+                </tr>
+              
+            
+              <tr>
+                <th>33</th>
+                <td>/layer3/layer3.1/conv3/Conv/WithoutBiases</td>
+                <td class="text-end">0.067000</td>
+                <td class="text-end">1.41%</td>
+                <td class="text-end">1536.733612</td>
+                <td class="text-end">15.344716</td>
+                <td class="text-end">102.961 M</td>
+                <td class="text-end">1.028 MB</td>
+                
+                  <td class="text-end">
+                    <a data-bs-toggle="collapse" href="#layers-33-extra" role="button" aria-expanded="false" aria-controls="layers-33-extra">More</a>
+                  </td>
+                
+              </tr>
+              
+                <tr></tr>
+                <tr>
+                  <th class="p-0"></th>
+                  <td class="p-0"colspan="8"><div class="collapse" id="layers-33-extra"><small>{&#39;onnx_nodes&#39;: [&#39;/layer3/layer3.1/conv3/Conv&#39;], &#39;ov_exec_type&#39;: &#39;convolution_gpu_bfyx_f16_1x1__f16&#39;}</small></div></td>
+                </tr>
+              
+            
+              <tr>
+                <th>34</th>
+                <td>/layer3/layer3.2/conv1/Conv/WithoutBiases</td>
+                <td class="text-end">0.053000</td>
+                <td class="text-end">1.11%</td>
+                <td class="text-end">1939.823094</td>
+                <td class="text-end">19.369057</td>
+                <td class="text-end">102.811 M</td>
+                <td class="text-end">1.027 MB</td>
+                
+                  <td class="text-end">
+                    <a data-bs-toggle="collapse" href="#layers-34-extra" role="button" aria-expanded="false" aria-controls="layers-34-extra">More</a>
+                  </td>
+                
+              </tr>
+              
+                <tr></tr>
+                <tr>
+                  <th class="p-0"></th>
+                  <td class="p-0"colspan="8"><div class="collapse" id="layers-34-extra"><small>{&#39;onnx_nodes&#39;: [&#39;/layer3/layer3.2/conv1/Conv&#39;], &#39;ov_exec_type&#39;: &#39;convolution_gpu_bfyx_f16_1x1__f16&#39;}</small></div></td>
+                </tr>
+              
+            
+              <tr>
+                <th>35</th>
+                <td>/layer3/layer3.2/conv2/Conv/WithoutBiases</td>
+                <td class="text-end">0.097000</td>
+                <td class="text-end">2.04%</td>
+                <td class="text-end">2384.135918</td>
+                <td class="text-end">14.235711</td>
+                <td class="text-end">231.261 M</td>
+                <td class="text-end">1.381 MB</td>
+                
+                  <td class="text-end">
+                    <a data-bs-toggle="collapse" href="#layers-35-extra" role="button" aria-expanded="false" aria-controls="layers-35-extra">More</a>
+                  </td>
+                
+              </tr>
+              
+                <tr></tr>
+                <tr>
+                  <th class="p-0"></th>
+                  <td class="p-0"colspan="8"><div class="collapse" id="layers-35-extra"><small>{&#39;onnx_nodes&#39;: [&#39;/layer3/layer3.2/conv2/Conv&#39;], &#39;ov_exec_type&#39;: &#39;convolution_gpu_bfyx_f16__f16&#39;}</small></div></td>
+                </tr>
+              
+            
+              <tr>
+                <th>36</th>
+                <td>/layer3/layer3.2/conv3/Conv/WithoutBiases</td>
+                <td class="text-end">0.066000</td>
+                <td class="text-end">1.39%</td>
+                <td class="text-end">1560.017455</td>
+                <td class="text-end">15.577212</td>
+                <td class="text-end">102.961 M</td>
+                <td class="text-end">1.028 MB</td>
+                
+                  <td class="text-end">
+                    <a data-bs-toggle="collapse" href="#layers-36-extra" role="button" aria-expanded="false" aria-controls="layers-36-extra">More</a>
+                  </td>
+                
+              </tr>
+              
+                <tr></tr>
+                <tr>
+                  <th class="p-0"></th>
+                  <td class="p-0"colspan="8"><div class="collapse" id="layers-36-extra"><small>{&#39;onnx_nodes&#39;: [&#39;/layer3/layer3.2/conv3/Conv&#39;], &#39;ov_exec_type&#39;: &#39;convolution_gpu_bfyx_f16_1x1__f16&#39;}</small></div></td>
+                </tr>
+              
+            
+              <tr>
+                <th>37</th>
+                <td>/layer3/layer3.3/conv1/Conv/WithoutBiases</td>
+                <td class="text-end">0.053000</td>
+                <td class="text-end">1.11%</td>
+                <td class="text-end">1939.823094</td>
+                <td class="text-end">19.369057</td>
+                <td class="text-end">102.811 M</td>
+                <td class="text-end">1.027 MB</td>
+                
+                  <td class="text-end">
+                    <a data-bs-toggle="collapse" href="#layers-37-extra" role="button" aria-expanded="false" aria-controls="layers-37-extra">More</a>
+                  </td>
+                
+              </tr>
+              
+                <tr></tr>
+                <tr>
+                  <th class="p-0"></th>
+                  <td class="p-0"colspan="8"><div class="collapse" id="layers-37-extra"><small>{&#39;onnx_nodes&#39;: [&#39;/layer3/layer3.3/conv1/Conv&#39;], &#39;ov_exec_type&#39;: &#39;convolution_gpu_bfyx_f16_1x1__f16&#39;}</small></div></td>
+                </tr>
+              
+            
+              <tr>
+                <th>38</th>
+                <td>/layer3/layer3.3/conv2/Conv/WithoutBiases</td>
+                <td class="text-end">0.094000</td>
+                <td class="text-end">1.98%</td>
+                <td class="text-end">2460.225362</td>
+                <td class="text-end">14.690043</td>
+                <td class="text-end">231.261 M</td>
+                <td class="text-end">1.381 MB</td>
+                
+                  <td class="text-end">
+                    <a data-bs-toggle="collapse" href="#layers-38-extra" role="button" aria-expanded="false" aria-controls="layers-38-extra">More</a>
+                  </td>
+                
+              </tr>
+              
+                <tr></tr>
+                <tr>
+                  <th class="p-0"></th>
+                  <td class="p-0"colspan="8"><div class="collapse" id="layers-38-extra"><small>{&#39;onnx_nodes&#39;: [&#39;/layer3/layer3.3/conv2/Conv&#39;], &#39;ov_exec_type&#39;: &#39;convolution_gpu_bfyx_f16__f16&#39;}</small></div></td>
+                </tr>
+              
+            
+              <tr>
+                <th>39</th>
+                <td>/layer3/layer3.3/conv3/Conv/WithoutBiases</td>
+                <td class="text-end">0.063000</td>
+                <td class="text-end">1.32%</td>
+                <td class="text-end">1634.304000</td>
+                <td class="text-end">16.318984</td>
+                <td class="text-end">102.961 M</td>
+                <td class="text-end">1.028 MB</td>
+                
+                  <td class="text-end">
+                    <a data-bs-toggle="collapse" href="#layers-39-extra" role="button" aria-expanded="false" aria-controls="layers-39-extra">More</a>
+                  </td>
+                
+              </tr>
+              
+                <tr></tr>
+                <tr>
+                  <th class="p-0"></th>
+                  <td class="p-0"colspan="8"><div class="collapse" id="layers-39-extra"><small>{&#39;onnx_nodes&#39;: [&#39;/layer3/layer3.3/conv3/Conv&#39;], &#39;ov_exec_type&#39;: &#39;convolution_gpu_bfyx_f16_1x1__f16&#39;}</small></div></td>
+                </tr>
+              
+            
+              <tr>
+                <th>40</th>
+                <td>/layer3/layer3.4/conv1/Conv/WithoutBiases</td>
+                <td class="text-end">0.054000</td>
+                <td class="text-end">1.14%</td>
+                <td class="text-end">1903.900444</td>
+                <td class="text-end">19.010370</td>
+                <td class="text-end">102.811 M</td>
+                <td class="text-end">1.027 MB</td>
+                
+                  <td class="text-end">
+                    <a data-bs-toggle="collapse" href="#layers-40-extra" role="button" aria-expanded="false" aria-controls="layers-40-extra">More</a>
+                  </td>
+                
+              </tr>
+              
+                <tr></tr>
+                <tr>
+                  <th class="p-0"></th>
+                  <td class="p-0"colspan="8"><div class="collapse" id="layers-40-extra"><small>{&#39;onnx_nodes&#39;: [&#39;/layer3/layer3.4/conv1/Conv&#39;], &#39;ov_exec_type&#39;: &#39;convolution_gpu_bfyx_f16_1x1__f16&#39;}</small></div></td>
+                </tr>
+              
+            
+              <tr>
+                <th>41</th>
+                <td>/layer3/layer3.4/conv2/Conv/WithoutBiases</td>
+                <td class="text-end">0.092000</td>
+                <td class="text-end">1.93%</td>
+                <td class="text-end">2513.708522</td>
+                <td class="text-end">15.009391</td>
+                <td class="text-end">231.261 M</td>
+                <td class="text-end">1.381 MB</td>
+                
+                  <td class="text-end">
+                    <a data-bs-toggle="collapse" href="#layers-41-extra" role="button" aria-expanded="false" aria-controls="layers-41-extra">More</a>
+                  </td>
+                
+              </tr>
+              
+                <tr></tr>
+                <tr>
+                  <th class="p-0"></th>
+                  <td class="p-0"colspan="8"><div class="collapse" id="layers-41-extra"><small>{&#39;onnx_nodes&#39;: [&#39;/layer3/layer3.4/conv2/Conv&#39;], &#39;ov_exec_type&#39;: &#39;convolution_gpu_bfyx_f16__f16&#39;}</small></div></td>
+                </tr>
+              
+            
+              <tr>
+                <th>42</th>
+                <td>/layer3/layer3.4/conv3/Conv/WithoutBiases</td>
+                <td class="text-end">0.063000</td>
+                <td class="text-end">1.32%</td>
+                <td class="text-end">1634.304000</td>
+                <td class="text-end">16.318984</td>
+                <td class="text-end">102.961 M</td>
+                <td class="text-end">1.028 MB</td>
+                
+                  <td class="text-end">
+                    <a data-bs-toggle="collapse" href="#layers-42-extra" role="button" aria-expanded="false" aria-controls="layers-42-extra">More</a>
+                  </td>
+                
+              </tr>
+              
+                <tr></tr>
+                <tr>
+                  <th class="p-0"></th>
+                  <td class="p-0"colspan="8"><div class="collapse" id="layers-42-extra"><small>{&#39;onnx_nodes&#39;: [&#39;/layer3/layer3.4/conv3/Conv&#39;], &#39;ov_exec_type&#39;: &#39;convolution_gpu_bfyx_f16_1x1__f16&#39;}</small></div></td>
+                </tr>
+              
+            
+              <tr>
+                <th>43</th>
+                <td>/layer3/layer3.5/conv1/Conv/WithoutBiases</td>
+                <td class="text-end">0.054000</td>
+                <td class="text-end">1.14%</td>
+                <td class="text-end">1903.900444</td>
+                <td class="text-end">19.010370</td>
+                <td class="text-end">102.811 M</td>
+                <td class="text-end">1.027 MB</td>
+                
+                  <td class="text-end">
+                    <a data-bs-toggle="collapse" href="#layers-43-extra" role="button" aria-expanded="false" aria-controls="layers-43-extra">More</a>
+                  </td>
+                
+              </tr>
+              
+                <tr></tr>
+                <tr>
+                  <th class="p-0"></th>
+                  <td class="p-0"colspan="8"><div class="collapse" id="layers-43-extra"><small>{&#39;onnx_nodes&#39;: [&#39;/layer3/layer3.5/conv1/Conv&#39;], &#39;ov_exec_type&#39;: &#39;convolution_gpu_bfyx_f16_1x1__f16&#39;}</small></div></td>
+                </tr>
+              
+            
+              <tr>
+                <th>44</th>
+                <td>/layer3/layer3.5/conv2/Conv/WithoutBiases</td>
+                <td class="text-end">0.092000</td>
+                <td class="text-end">1.93%</td>
+                <td class="text-end">2513.708522</td>
+                <td class="text-end">15.009391</td>
+                <td class="text-end">231.261 M</td>
+                <td class="text-end">1.381 MB</td>
+                
+                  <td class="text-end">
+                    <a data-bs-toggle="collapse" href="#layers-44-extra" role="button" aria-expanded="false" aria-controls="layers-44-extra">More</a>
+                  </td>
+                
+              </tr>
+              
+                <tr></tr>
+                <tr>
+                  <th class="p-0"></th>
+                  <td class="p-0"colspan="8"><div class="collapse" id="layers-44-extra"><small>{&#39;onnx_nodes&#39;: [&#39;/layer3/layer3.5/conv2/Conv&#39;], &#39;ov_exec_type&#39;: &#39;convolution_gpu_bfyx_f16__f16&#39;}</small></div></td>
+                </tr>
+              
+            
+              <tr>
+                <th>45</th>
+                <td>/layer3/layer3.5/conv3/Conv/WithoutBiases</td>
+                <td class="text-end">0.065000</td>
+                <td class="text-end">1.37%</td>
+                <td class="text-end">1584.017723</td>
+                <td class="text-end">15.816862</td>
+                <td class="text-end">102.961 M</td>
+                <td class="text-end">1.028 MB</td>
+                
+                  <td class="text-end">
+                    <a data-bs-toggle="collapse" href="#layers-45-extra" role="button" aria-expanded="false" aria-controls="layers-45-extra">More</a>
+                  </td>
+                
+              </tr>
+              
+                <tr></tr>
+                <tr>
+                  <th class="p-0"></th>
+                  <td class="p-0"colspan="8"><div class="collapse" id="layers-45-extra"><small>{&#39;onnx_nodes&#39;: [&#39;/layer3/layer3.5/conv3/Conv&#39;], &#39;ov_exec_type&#39;: &#39;convolution_gpu_bfyx_f16_1x1__f16&#39;}</small></div></td>
+                </tr>
+              
+            
+              <tr>
+                <th>46</th>
+                <td>/layer4/layer4.0/conv1/Conv/WithoutBiases</td>
+                <td class="text-end">0.115000</td>
+                <td class="text-end">2.42%</td>
+                <td class="text-end">1788.010852</td>
+                <td class="text-end">14.362713</td>
+                <td class="text-end">205.621 M</td>
+                <td class="text-end">1.652 MB</td>
+                
+                  <td class="text-end">
+                    <a data-bs-toggle="collapse" href="#layers-46-extra" role="button" aria-expanded="false" aria-controls="layers-46-extra">More</a>
+                  </td>
+                
+              </tr>
+              
+                <tr></tr>
+                <tr>
+                  <th class="p-0"></th>
+                  <td class="p-0"colspan="8"><div class="collapse" id="layers-46-extra"><small>{&#39;onnx_nodes&#39;: [&#39;/layer4/layer4.0/conv1/Conv&#39;], &#39;ov_exec_type&#39;: &#39;convolution_gpu_bfyx_f16__f16&#39;}</small></div></td>
+                </tr>
+              
+            
+              <tr>
+                <th>47</th>
+                <td>/layer4/layer4.0/conv2/Conv/WithoutBiases</td>
+                <td class="text-end">0.130000</td>
+                <td class="text-end">2.73%</td>
+                <td class="text-end">1778.739200</td>
+                <td class="text-end">38.234585</td>
+                <td class="text-end">231.236 M</td>
+                <td class="text-end">4.970 MB</td>
+                
+                  <td class="text-end">
+                    <a data-bs-toggle="collapse" href="#layers-47-extra" role="button" aria-expanded="false" aria-controls="layers-47-extra">More</a>
+                  </td>
+                
+              </tr>
+              
+                <tr></tr>
+                <tr>
+                  <th class="p-0"></th>
+                  <td class="p-0"colspan="8"><div class="collapse" id="layers-47-extra"><small>{&#39;onnx_nodes&#39;: [&#39;/layer4/layer4.0/conv2/Conv&#39;], &#39;ov_exec_type&#39;: &#39;convolution_gpu_bfyx_f16__f16&#39;}</small></div></td>
+                </tr>
+              
+            
+              <tr>
+                <th>48</th>
+                <td>/layer4/layer4.0/conv3/Conv/WithoutBiases</td>
+                <td class="text-end">0.087000</td>
+                <td class="text-end">1.83%</td>
+                <td class="text-end">1182.308046</td>
+                <td class="text-end">27.035954</td>
+                <td class="text-end">102.861 M</td>
+                <td class="text-end">2.352 MB</td>
+                
+                  <td class="text-end">
+                    <a data-bs-toggle="collapse" href="#layers-48-extra" role="button" aria-expanded="false" aria-controls="layers-48-extra">More</a>
+                  </td>
+                
+              </tr>
+              
+                <tr></tr>
+                <tr>
+                  <th class="p-0"></th>
+                  <td class="p-0"colspan="8"><div class="collapse" id="layers-48-extra"><small>{&#39;onnx_nodes&#39;: [&#39;/layer4/layer4.0/conv3/Conv&#39;], &#39;ov_exec_type&#39;: &#39;convolution_gpu_bfyx_f16_1x1__f16&#39;}</small></div></td>
+                </tr>
+              
+            
+              <tr>
+                <th>49</th>
+                <td>/layer4/layer4.0/downsample/downsample.0/Conv/WithoutBiases</td>
+                <td class="text-end">0.150000</td>
+                <td class="text-end">3.15%</td>
+                <td class="text-end">1370.808320</td>
+                <td class="text-end">29.996373</td>
+                <td class="text-end">205.621 M</td>
+                <td class="text-end">4.499 MB</td>
+                
+                  <td class="text-end">
+                    <a data-bs-toggle="collapse" href="#layers-49-extra" role="button" aria-expanded="false" aria-controls="layers-49-extra">More</a>
+                  </td>
+                
+              </tr>
+              
+                <tr></tr>
+                <tr>
+                  <th class="p-0"></th>
+                  <td class="p-0"colspan="8"><div class="collapse" id="layers-49-extra"><small>{&#39;onnx_nodes&#39;: [&#39;/layer4/layer4.0/downsample/downsample.0/Conv&#39;], &#39;ov_exec_type&#39;: &#39;convolution_gpu_bfyx_f16__f16&#39;}</small></div></td>
+                </tr>
+              
+            
+              <tr>
+                <th>50</th>
+                <td>/layer4/layer4.1/conv1/Conv/WithoutBiases</td>
+                <td class="text-end">0.086000</td>
+                <td class="text-end">1.81%</td>
+                <td class="text-end">1195.180651</td>
+                <td class="text-end">27.314605</td>
+                <td class="text-end">102.786 M</td>
+                <td class="text-end">2.349 MB</td>
+                
+                  <td class="text-end">
+                    <a data-bs-toggle="collapse" href="#layers-50-extra" role="button" aria-expanded="false" aria-controls="layers-50-extra">More</a>
+                  </td>
+                
+              </tr>
+              
+                <tr></tr>
+                <tr>
+                  <th class="p-0"></th>
+                  <td class="p-0"colspan="8"><div class="collapse" id="layers-50-extra"><small>{&#39;onnx_nodes&#39;: [&#39;/layer4/layer4.1/conv1/Conv&#39;], &#39;ov_exec_type&#39;: &#39;convolution_gpu_bfyx_f16_1x1__f16&#39;}</small></div></td>
+                </tr>
+              
+            
+              <tr>
+                <th>51</th>
+                <td>/layer4/layer4.1/conv2/Conv/WithoutBiases</td>
+                <td class="text-end">0.123000</td>
+                <td class="text-end">2.59%</td>
+                <td class="text-end">1879.968260</td>
+                <td class="text-end">39.186732</td>
+                <td class="text-end">231.236 M</td>
+                <td class="text-end">4.820 MB</td>
+                
+                  <td class="text-end">
+                    <a data-bs-toggle="collapse" href="#layers-51-extra" role="button" aria-expanded="false" aria-controls="layers-51-extra">More</a>
+                  </td>
+                
+              </tr>
+              
+                <tr></tr>
+                <tr>
+                  <th class="p-0"></th>
+                  <td class="p-0"colspan="8"><div class="collapse" id="layers-51-extra"><small>{&#39;onnx_nodes&#39;: [&#39;/layer4/layer4.1/conv2/Conv&#39;], &#39;ov_exec_type&#39;: &#39;convolution_gpu_bfyx_f16__f16&#39;}</small></div></td>
+                </tr>
+              
+            
+              <tr>
+                <th>52</th>
+                <td>/layer4/layer4.1/conv3/Conv/WithoutBiases</td>
+                <td class="text-end">0.081000</td>
+                <td class="text-end">1.70%</td>
+                <td class="text-end">1269.886420</td>
+                <td class="text-end">29.038617</td>
+                <td class="text-end">102.861 M</td>
+                <td class="text-end">2.352 MB</td>
+                
+                  <td class="text-end">
+                    <a data-bs-toggle="collapse" href="#layers-52-extra" role="button" aria-expanded="false" aria-controls="layers-52-extra">More</a>
+                  </td>
+                
+              </tr>
+              
+                <tr></tr>
+                <tr>
+                  <th class="p-0"></th>
+                  <td class="p-0"colspan="8"><div class="collapse" id="layers-52-extra"><small>{&#39;onnx_nodes&#39;: [&#39;/layer4/layer4.1/conv3/Conv&#39;], &#39;ov_exec_type&#39;: &#39;convolution_gpu_bfyx_f16_1x1__f16&#39;}</small></div></td>
+                </tr>
+              
+            
+              <tr>
+                <th>53</th>
+                <td>/layer4/layer4.2/conv1/Conv/WithoutBiases</td>
+                <td class="text-end">0.078000</td>
+                <td class="text-end">1.64%</td>
+                <td class="text-end">1317.763282</td>
+                <td class="text-end">30.116103</td>
+                <td class="text-end">102.786 M</td>
+                <td class="text-end">2.349 MB</td>
+                
+                  <td class="text-end">
+                    <a data-bs-toggle="collapse" href="#layers-53-extra" role="button" aria-expanded="false" aria-controls="layers-53-extra">More</a>
+                  </td>
+                
+              </tr>
+              
+                <tr></tr>
+                <tr>
+                  <th class="p-0"></th>
+                  <td class="p-0"colspan="8"><div class="collapse" id="layers-53-extra"><small>{&#39;onnx_nodes&#39;: [&#39;/layer4/layer4.2/conv1/Conv&#39;], &#39;ov_exec_type&#39;: &#39;convolution_gpu_bfyx_f16_1x1__f16&#39;}</small></div></td>
+                </tr>
+              
+            
+              <tr>
+                <th>54</th>
+                <td>/layer4/layer4.2/conv2/Conv/WithoutBiases</td>
+                <td class="text-end">0.108000</td>
+                <td class="text-end">2.27%</td>
+                <td class="text-end">2141.074963</td>
+                <td class="text-end">44.629333</td>
+                <td class="text-end">231.236 M</td>
+                <td class="text-end">4.820 MB</td>
+                
+                  <td class="text-end">
+                    <a data-bs-toggle="collapse" href="#layers-54-extra" role="button" aria-expanded="false" aria-controls="layers-54-extra">More</a>
+                  </td>
+                
+              </tr>
+              
+                <tr></tr>
+                <tr>
+                  <th class="p-0"></th>
+                  <td class="p-0"colspan="8"><div class="collapse" id="layers-54-extra"><small>{&#39;onnx_nodes&#39;: [&#39;/layer4/layer4.2/conv2/Conv&#39;], &#39;ov_exec_type&#39;: &#39;convolution_gpu_bfyx_f16__f16&#39;}</small></div></td>
+                </tr>
+              
+            
+              <tr>
+                <th>55</th>
+                <td>/layer4/layer4.2/conv3/Conv/WithoutBiases</td>
+                <td class="text-end">0.079000</td>
+                <td class="text-end">1.66%</td>
+                <td class="text-end">1302.035443</td>
+                <td class="text-end">29.773772</td>
+                <td class="text-end">102.861 M</td>
+                <td class="text-end">2.352 MB</td>
+                
+                  <td class="text-end">
+                    <a data-bs-toggle="collapse" href="#layers-55-extra" role="button" aria-expanded="false" aria-controls="layers-55-extra">More</a>
+                  </td>
+                
+              </tr>
+              
+                <tr></tr>
+                <tr>
+                  <th class="p-0"></th>
+                  <td class="p-0"colspan="8"><div class="collapse" id="layers-55-extra"><small>{&#39;onnx_nodes&#39;: [&#39;/layer4/layer4.2/conv3/Conv&#39;], &#39;ov_exec_type&#39;: &#39;convolution_gpu_bfyx_f16_1x1__f16&#39;}</small></div></td>
+                </tr>
+              
+            
+              <tr>
+                <th>56</th>
+                <td>/maxpool/MaxPool</td>
+                <td class="text-end">0.024000</td>
+                <td class="text-end">0.50%</td>
+                <td class="text-end">75.264000</td>
+                <td class="text-end">83.626667</td>
+                <td class="text-end">1.806 M</td>
+                <td class="text-end">2.007 MB</td>
+                
+                  <td class="text-end">
+                    <a data-bs-toggle="collapse" href="#layers-56-extra" role="button" aria-expanded="false" aria-controls="layers-56-extra">More</a>
+                  </td>
+                
+              </tr>
+              
+                <tr></tr>
+                <tr>
+                  <th class="p-0"></th>
+                  <td class="p-0"colspan="8"><div class="collapse" id="layers-56-extra"><small>{&#39;onnx_nodes&#39;: [&#39;/maxpool/MaxPool&#39;], &#39;ov_exec_type&#39;: &#39;pooling_gpu_blocked__f16&#39;}</small></div></td>
+                </tr>
+              
+            
+              <tr>
+                <th>57</th>
+                <td>Convert_2716</td>
+                <td class="text-end">0.016000</td>
+                <td class="text-end">0.34%</td>
+                <td class="text-end">0.000000</td>
+                <td class="text-end">0.000000</td>
+                <td class="text-end">0.000 M</td>
+                <td class="text-end">0.000 MB</td>
+                
+                  <td class="text-end">
+                    <a data-bs-toggle="collapse" href="#layers-57-extra" role="button" aria-expanded="false" aria-controls="layers-57-extra">More</a>
+                  </td>
+                
+              </tr>
+              
+                <tr></tr>
+                <tr>
+                  <th class="p-0"></th>
+                  <td class="p-0"colspan="8"><div class="collapse" id="layers-57-extra"><small>{&#39;onnx_nodes&#39;: [], &#39;ov_exec_type&#39;: &#39;reorder_data_fast_b1__f32&#39;}</small></div></td>
+                </tr>
+              
+            
+              <tr>
+                <th>58</th>
+                <td>prob/sink_port_0</td>
+                <td class="text-end">0.002000</td>
+                <td class="text-end">0.04%</td>
+                <td class="text-end">0.000000</td>
+                <td class="text-end">0.000000</td>
+                <td class="text-end">0.000 M</td>
+                <td class="text-end">0.000 MB</td>
+                
+                  <td class="text-end">
+                    <a data-bs-toggle="collapse" href="#layers-58-extra" role="button" aria-expanded="false" aria-controls="layers-58-extra">More</a>
+                  </td>
+                
+              </tr>
+              
+                <tr></tr>
+                <tr>
+                  <th class="p-0"></th>
+                  <td class="p-0"colspan="8"><div class="collapse" id="layers-58-extra"><small>{&#39;onnx_nodes&#39;: [], &#39;ov_exec_type&#39;: &#39;reorder_data_fast_b1__f32&#39;}</small></div></td>
+                </tr>
+              
+            
+          </tbody>
+        </table>
+      </div>
+    </main>
+  </div>
+</div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js" integrity="sha384-uO3SXW5IuS1ZpFPKugNNWqTZRRglnUJK6UAZ/gxOX80nxEkN9NcGZTftn6RzhGWE" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.2.1/dist/chart.umd.min.js" integrity="sha384-gdQErvCNWvHQZj6XZM0dNsAoY4v+j5P1XDpNkcM3HJG1Yx04ecqIHk7+4VBOCHOG" crossorigin="anonymous"></script>
+    <script src="assets/common.js"></script>
+    <script src="assets/roofline-chart.js"></script>
+    <script>
+      'use strict'
+
+      // Graphs
+      const ctx = document.getElementById('roofline-chart')
+
+      let raw_data = [
+        
+          {
+            x: 0.5,
+            y: 11.37777777777778,
+            r: 5,
+            time: 8.999999999999999e-06,
+            memory: 22.75555555555556,
+            percentage: 0.18919487071683833,
+            idx: 1,
+            name: "/avgpool/GlobalAveragePool"
+          },
+        
+          {
+            x: 122.98856687051317,
+            y: 1007.7902978723405,
+            r: 5,
+            time: 0.000235,
+            memory: 8.194178723404256,
+            percentage: 4.940088290939667,
+            idx: 2,
+            name: "/conv1/Conv/WithoutBiases"
+          },
+        
+          {
+            x: 0.9982709956102391,
+            y: 53.9078947368421,
+            r: 5,
+            time: 7.6e-05,
+            memory: 54.00126315789474,
+            percentage: 1.5976455749421907,
+            idx: 3,
+            name: "/fc/Gemm/WithoutBiases"
+          },
+        
+          {
+            x: 31.91920467097996,
+            y: 1035.63264,
+            r: 5,
+            time: 2.5e-05,
+            memory: 32.44544,
+            percentage: 0.5255413075467732,
+            idx: 4,
+            name: "/layer1/layer1.0/conv1/Conv/WithoutBiases"
+          },
+        
+          {
+            x: 263.9661264418163,
+            y: 2203.921066666667,
+            r: 5,
+            time: 0.00010499999999999999,
+            memory: 8.349257142857143,
+            percentage: 2.2072734916964474,
+            idx: 5,
+            name: "/layer1/layer1.0/conv2/Conv/WithoutBiases"
+          },
+        
+          {
+            x: 50.75834378920953,
+            y: 1344.9774545454545,
+            r: 5,
+            time: 7.7e-05,
+            memory: 26.497662337662337,
+            percentage: 1.6186672272440614,
+            idx: 6,
+            name: "/layer1/layer1.0/conv3/Conv/WithoutBiases"
+          },
+        
+          {
+            x: 50.75834378920953,
+            y: 1522.989176470588,
+            r: 5,
+            time: 6.8e-05,
+            memory: 30.00470588235294,
+            percentage: 1.4294723565272232,
+            idx: 7,
+            name: "/layer1/layer1.0/downsample/downsample.0/Conv/WithoutBiases"
+          },
+        
+          {
+            x: 50.47273639957332,
+            y: 1584.017723076923,
+            r: 5,
+            time: 6.500000000000001e-05,
+            memory: 31.383630769230766,
+            percentage: 1.3664073996216104,
+            idx: 8,
+            name: "/layer1/layer1.1/conv1/Conv/WithoutBiases"
+          },
+        
+          {
+            x: 263.9661264418163,
+            y: 2629.678545454545,
+            r: 5,
+            time: 8.8e-05,
+            memory: 9.962181818181818,
+            percentage: 1.8499054025646418,
+            idx: 9,
+            name: "/layer1/layer1.1/conv2/Conv/WithoutBiases"
+          },
+        
+          {
+            x: 50.75834378920953,
+            y: 1545.720358208955,
+            r: 5,
+            time: 6.7e-05,
+            memory: 30.452537313432835,
+            percentage: 1.4084507042253522,
+            idx: 10,
+            name: "/layer1/layer1.1/conv3/Conv/WithoutBiases"
+          },
+        
+          {
+            x: 50.47273639957332,
+            y: 1745.1042711864407,
+            r: 5,
+            time: 5.9e-05,
+            memory: 34.57518644067797,
+            percentage: 1.2402774858103847,
+            idx: 11,
+            name: "/layer1/layer1.2/conv1/Conv/WithoutBiases"
+          },
+        
+          {
+            x: 263.9661264418163,
+            y: 2690.8338604651167,
+            r: 5,
+            time: 8.599999999999999e-05,
+            memory: 10.193860465116279,
+            percentage: 1.8078620979608995,
+            idx: 12,
+            name: "/layer1/layer1.2/conv2/Conv/WithoutBiases"
+          },
+        
+          {
+            x: 50.75834378920953,
+            y: 1522.989176470588,
+            r: 5,
+            time: 6.8e-05,
+            memory: 30.00470588235294,
+            percentage: 1.4294723565272232,
+            idx: 13,
+            name: "/layer1/layer1.2/conv3/Conv/WithoutBiases"
+          },
+        
+          {
+            x: 83.22648732540092,
+            y: 1906.688,
+            r: 5,
+            time: 0.000108,
+            memory: 22.90962962962963,
+            percentage: 2.27033844860206,
+            idx: 14,
+            name: "/layer2/layer2.0/conv1/Conv/WithoutBiases"
+          },
+        
+          {
+            x: 178.11157106248768,
+            y: 1927.5946666666669,
+            r: 5,
+            time: 0.00011999999999999999,
+            memory: 10.8224,
+            percentage: 2.522598276224511,
+            idx: 15,
+            name: "/layer2/layer2.0/conv2/Conv/WithoutBiases"
+          },
+        
+          {
+            x: 90.84220018034264,
+            y: 1473.7407999999998,
+            r: 5,
+            time: 7.000000000000001e-05,
+            memory: 16.223085714285713,
+            percentage: 1.471515661130965,
+            idx: 16,
+            name: "/layer2/layer2.0/conv3/Conv/WithoutBiases"
+          },
+        
+          {
+            x: 140.3321702721563,
+            y: 1328.5309935483872,
+            r: 5,
+            time: 0.000155,
+            memory: 9.467045161290324,
+            percentage: 3.2583561067899938,
+            idx: 17,
+            name: "/layer2/layer2.0/downsample/downsample.0/Conv/WithoutBiases"
+          },
+        
+          {
+            x: 90.63839386420031,
+            y: 1773.4620689655173,
+            r: 5,
+            time: 5.8e-05,
+            memory: 19.566344827586207,
+            percentage: 1.2192558335085137,
+            idx: 18,
+            name: "/layer2/layer2.1/conv1/Conv/WithoutBiases"
+          },
+        
+          {
+            x: 332.069092245498,
+            y: 2065.28,
+            r: 5,
+            time: 0.000112,
+            memory: 6.219428571428572,
+            percentage: 2.354425057809544,
+            idx: 19,
+            name: "/layer2/layer2.1/conv2/Conv/WithoutBiases"
+          },
+        
+          {
+            x: 90.84220018034264,
+            y: 1611.904,
+            r: 5,
+            time: 6.4e-05,
+            memory: 17.744,
+            percentage: 1.3453857473197393,
+            idx: 20,
+            name: "/layer2/layer2.1/conv3/Conv/WithoutBiases"
+          },
+        
+          {
+            x: 90.63839386420031,
+            y: 1978.092307692308,
+            r: 5,
+            time: 5.2e-05,
+            memory: 21.824,
+            percentage: 1.0931259196972882,
+            idx: 21,
+            name: "/layer2/layer2.2/conv1/Conv/WithoutBiases"
+          },
+        
+          {
+            x: 332.069092245498,
+            y: 2434.8564210526315,
+            r: 5,
+            time: 9.5e-05,
+            memory: 7.33237894736842,
+            percentage: 1.9970569686777382,
+            idx: 22,
+            name: "/layer2/layer2.2/conv2/Conv/WithoutBiases"
+          },
+        
+          {
+            x: 90.84220018034264,
+            y: 1637.4897777777778,
+            r: 5,
+            time: 6.3e-05,
+            memory: 18.025650793650794,
+            percentage: 1.3243640950178686,
+            idx: 23,
+            name: "/layer2/layer2.2/conv3/Conv/WithoutBiases"
+          },
+        
+          {
+            x: 90.63839386420031,
+            y: 2016.8784313725491,
+            r: 5,
+            time: 5.1e-05,
+            memory: 22.251921568627452,
+            percentage: 1.0721042673954173,
+            idx: 24,
+            name: "/layer2/layer2.3/conv1/Conv/WithoutBiases"
+          },
+        
+          {
+            x: 332.069092245498,
+            y: 2460.7591489361703,
+            r: 5,
+            time: 9.4e-05,
+            memory: 7.410382978723405,
+            percentage: 1.976035316375867,
+            idx: 25,
+            name: "/layer2/layer2.3/conv2/Conv/WithoutBiases"
+          },
+        
+          {
+            x: 90.84220018034264,
+            y: 1663.9009032258064,
+            r: 5,
+            time: 6.2e-05,
+            memory: 18.316387096774193,
+            percentage: 1.3033424427159976,
+            idx: 26,
+            name: "/layer2/layer2.3/conv3/Conv/WithoutBiases"
+          },
+        
+          {
+            x: 140.24432809773123,
+            y: 1672.5333333333333,
+            r: 5,
+            time: 0.000123,
+            memory: 11.925853658536585,
+            percentage: 2.585663233130124,
+            idx: 27,
+            name: "/layer3/layer3.0/conv1/Conv/WithoutBiases"
+          },
+        
+          {
+            x: 137.49832572298325,
+            y: 1927.1765333333335,
+            r: 5,
+            time: 0.00011999999999999999,
+            memory: 14.016000000000002,
+            percentage: 2.522598276224511,
+            idx: 28,
+            name: "/layer3/layer3.0/conv2/Conv/WithoutBiases"
+          },
+        
+          {
+            x: 100.14741035856574,
+            y: 1410.4267397260273,
+            r: 5,
+            time: 7.3e-05,
+            memory: 14.08350684931507,
+            percentage: 1.5345806180365775,
+            idx: 29,
+            name: "/layer3/layer3.0/conv3/Conv/WithoutBiases"
+          },
+        
+          {
+            x: 124.4733581164808,
+            y: 1380.681879194631,
+            r: 5,
+            time: 0.000149,
+            memory: 11.092187919463088,
+            percentage: 3.1322261929787683,
+            idx: 30,
+            name: "/layer3/layer3.0/downsample/downsample.0/Conv/WithoutBiases"
+          },
+        
+          {
+            x: 100.1506234413965,
+            y: 1742.5529491525424,
+            r: 5,
+            time: 5.9e-05,
+            memory: 17.399322033898304,
+            percentage: 1.2402774858103847,
+            idx: 31,
+            name: "/layer3/layer3.1/conv1/Conv/WithoutBiases"
+          },
+        
+          {
+            x: 167.47571375602521,
+            y: 2121.66223853211,
+            r: 5,
+            time: 0.00010899999999999999,
+            memory: 12.668477064220184,
+            percentage: 2.291360100903931,
+            idx: 32,
+            name: "/layer3/layer3.1/conv2/Conv/WithoutBiases"
+          },
+        
+          {
+            x: 100.14741035856574,
+            y: 1536.7336119402983,
+            r: 5,
+            time: 6.7e-05,
+            memory: 15.344716417910448,
+            percentage: 1.4084507042253522,
+            idx: 33,
+            name: "/layer3/layer3.1/conv3/Conv/WithoutBiases"
+          },
+        
+          {
+            x: 100.1506234413965,
+            y: 1939.8230943396225,
+            r: 5,
+            time: 5.3e-05,
+            memory: 19.369056603773586,
+            percentage: 1.1141475719991591,
+            idx: 34,
+            name: "/layer3/layer3.2/conv1/Conv/WithoutBiases"
+          },
+        
+          {
+            x: 167.47571375602521,
+            y: 2384.1359175257735,
+            r: 5,
+            time: 9.7e-05,
+            memory: 14.235711340206187,
+            percentage: 2.03910027328148,
+            idx: 35,
+            name: "/layer3/layer3.2/conv2/Conv/WithoutBiases"
+          },
+        
+          {
+            x: 100.14741035856574,
+            y: 1560.0174545454543,
+            r: 5,
+            time: 6.6e-05,
+            memory: 15.57721212121212,
+            percentage: 1.3874290519234813,
+            idx: 36,
+            name: "/layer3/layer3.2/conv3/Conv/WithoutBiases"
+          },
+        
+          {
+            x: 100.1506234413965,
+            y: 1939.8230943396225,
+            r: 5,
+            time: 5.3e-05,
+            memory: 19.369056603773586,
+            percentage: 1.1141475719991591,
+            idx: 37,
+            name: "/layer3/layer3.3/conv1/Conv/WithoutBiases"
+          },
+        
+          {
+            x: 167.47571375602521,
+            y: 2460.225361702128,
+            r: 5,
+            time: 9.4e-05,
+            memory: 14.69004255319149,
+            percentage: 1.976035316375867,
+            idx: 38,
+            name: "/layer3/layer3.3/conv2/Conv/WithoutBiases"
+          },
+        
+          {
+            x: 100.14741035856574,
+            y: 1634.304,
+            r: 5,
+            time: 6.3e-05,
+            memory: 16.318984126984127,
+            percentage: 1.3243640950178686,
+            idx: 39,
+            name: "/layer3/layer3.3/conv3/Conv/WithoutBiases"
+          },
+        
+          {
+            x: 100.1506234413965,
+            y: 1903.9004444444445,
+            r: 5,
+            time: 5.4e-05,
+            memory: 19.010370370370374,
+            percentage: 1.13516922430103,
+            idx: 40,
+            name: "/layer3/layer3.4/conv1/Conv/WithoutBiases"
+          },
+        
+          {
+            x: 167.47571375602521,
+            y: 2513.7085217391304,
+            r: 5,
+            time: 9.2e-05,
+            memory: 15.009391304347826,
+            percentage: 1.9339920117721252,
+            idx: 41,
+            name: "/layer3/layer3.4/conv2/Conv/WithoutBiases"
+          },
+        
+          {
+            x: 100.14741035856574,
+            y: 1634.304,
+            r: 5,
+            time: 6.3e-05,
+            memory: 16.318984126984127,
+            percentage: 1.3243640950178686,
+            idx: 42,
+            name: "/layer3/layer3.4/conv3/Conv/WithoutBiases"
+          },
+        
+          {
+            x: 100.1506234413965,
+            y: 1903.9004444444445,
+            r: 5,
+            time: 5.4e-05,
+            memory: 19.010370370370374,
+            percentage: 1.13516922430103,
+            idx: 43,
+            name: "/layer3/layer3.5/conv1/Conv/WithoutBiases"
+          },
+        
+          {
+            x: 167.47571375602521,
+            y: 2513.7085217391304,
+            r: 5,
+            time: 9.2e-05,
+            memory: 15.009391304347826,
+            percentage: 1.9339920117721252,
+            idx: 44,
+            name: "/layer3/layer3.5/conv2/Conv/WithoutBiases"
+          },
+        
+          {
+            x: 100.14741035856574,
+            y: 1584.017723076923,
+            r: 5,
+            time: 6.500000000000001e-05,
+            memory: 15.816861538461536,
+            percentage: 1.3664073996216104,
+            idx: 45,
+            name: "/layer3/layer3.5/conv3/Conv/WithoutBiases"
+          },
+        
+          {
+            x: 124.48977061376317,
+            y: 1788.010852173913,
+            r: 5,
+            time: 0.000115,
+            memory: 14.36271304347826,
+            percentage: 2.417490014715157,
+            idx: 46,
+            name: "/layer4/layer4.0/conv1/Conv/WithoutBiases"
+          },
+        
+          {
+            x: 46.52173465183354,
+            y: 1778.7391999999998,
+            r: 5,
+            time: 0.00013000000000000002,
+            memory: 38.23458461538461,
+            percentage: 2.732814799243221,
+            idx: 47,
+            name: "/layer4/layer4.0/conv2/Conv/WithoutBiases"
+          },
+        
+          {
+            x: 43.73095341750109,
+            y: 1182.3080459770115,
+            r: 5,
+            time: 8.7e-05,
+            memory: 27.035954022988506,
+            percentage: 1.8288837502627706,
+            idx: 48,
+            name: "/layer4/layer4.0/conv3/Conv/WithoutBiases"
+          },
+        
+          {
+            x: 45.69913518434228,
+            y: 1370.80832,
+            r: 5,
+            time: 0.00015,
+            memory: 29.996373333333334,
+            percentage: 3.1532478452806387,
+            idx: 49,
+            name: "/layer4/layer4.0/downsample/downsample.0/Conv/WithoutBiases"
+          },
+        
+          {
+            x: 43.75610287707062,
+            y: 1195.1806511627908,
+            r: 5,
+            time: 8.599999999999999e-05,
+            memory: 27.314604651162792,
+            percentage: 1.8078620979608995,
+            idx: 50,
+            name: "/layer4/layer4.1/conv1/Conv/WithoutBiases"
+          },
+        
+          {
+            x: 47.974612279583596,
+            y: 1879.9682601626016,
+            r: 5,
+            time: 0.000123,
+            memory: 39.18673170731707,
+            percentage: 2.585663233130124,
+            idx: 51,
+            name: "/layer4/layer4.1/conv2/Conv/WithoutBiases"
+          },
+        
+          {
+            x: 43.73095341750109,
+            y: 1269.8864197530863,
+            r: 5,
+            time: 8.1e-05,
+            memory: 29.038617283950614,
+            percentage: 1.702753836451545,
+            idx: 52,
+            name: "/layer4/layer4.1/conv3/Conv/WithoutBiases"
+          },
+        
+          {
+            x: 43.75610287707062,
+            y: 1317.763282051282,
+            r: 5,
+            time: 7.8e-05,
+            memory: 30.116102564102565,
+            percentage: 1.6396888795459321,
+            idx: 53,
+            name: "/layer4/layer4.2/conv1/Conv/WithoutBiases"
+          },
+        
+          {
+            x: 47.974612279583596,
+            y: 2141.074962962963,
+            r: 5,
+            time: 0.000108,
+            memory: 44.629333333333335,
+            percentage: 2.27033844860206,
+            idx: 54,
+            name: "/layer4/layer4.2/conv2/Conv/WithoutBiases"
+          },
+        
+          {
+            x: 43.73095341750109,
+            y: 1302.0354430379748,
+            r: 5,
+            time: 7.9e-05,
+            memory: 29.773772151898736,
+            percentage: 1.6607105318478033,
+            idx: 55,
+            name: "/layer4/layer4.2/conv3/Conv/WithoutBiases"
+          },
+        
+          {
+            x: 0.9,
+            y: 75.264,
+            r: 5,
+            time: 2.4e-05,
+            memory: 83.62666666666667,
+            percentage: 0.5045196552449023,
+            idx: 56,
+            name: "/maxpool/MaxPool"
+          },
+        
+          {
+            x: 0,
+            y: 0.0,
+            r: 5,
+            time: 1.6e-05,
+            memory: 0.0,
+            percentage: 0.3363464368299348,
+            idx: 57,
+            name: "Convert_2716"
+          },
+        
+          {
+            x: 0,
+            y: 0.0,
+            r: 5,
+            time: 2e-06,
+            memory: 0.0,
+            percentage: 0.04204330460374185,
+            idx: 58,
+            name: "prob/sink_port_0"
+          },
+        
+      ];
+
+      let chart = roofline_chart(ctx, raw_data);
+    </script>
+  </body>
+</html>

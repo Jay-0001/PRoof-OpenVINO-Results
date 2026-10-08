@@ -1,0 +1,2679 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <title>PRoof dataviewer</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+
+    <link href="assets/common.css" rel="stylesheet">
+  </head>
+  <body>
+
+<header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
+  <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3 fs-6" href="#">PRoof dataviewer</a>
+  <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <span class="navbar-text ms-4 me-md-4 me-auto">
+    Model: resnet-v1-50.onnx
+  </span>
+  <!-- <input class="form-control form-control-dark w-100 rounded-0 border-0" type="text" placeholder="Search" aria-label="Search"> -->
+</header>
+
+<div class="container-fluid">
+  <div class="row">
+    <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+      <div class="position-sticky pt-3 sidebar-sticky">
+        <ul class="nav flex-column">
+          <li class="nav-item">
+            <a class="nav-link" href="index.html">
+              <span data-feather="home" class="align-text-bottom"></span>
+              Summary
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="model.html">
+              <span data-feather="file" class="align-text-bottom"></span>
+              Model analyze
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link disabled" href="#">
+              <span data-feather="bar-chart-2" class="align-text-bottom"></span>
+              End-to-end performance
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="layer-1.html">
+              <span data-feather="layers" class="align-text-bottom"></span>
+              Layer performance
+            </a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+      <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2">Model analyze</h1>
+      </div>
+
+      <h2 class="h4">Inputs</h2>
+      <div class="table-responsive col-xl-6">
+        <table class="table table-striped table-sm font-monospace">
+          <thead>
+            <tr>
+              <th scope="col">Name</th>
+              <th scope="col">Shape</th>
+            </tr>
+          </thead>
+          <tbody>
+            
+              <tr>
+                <td>data</td>
+                <td>[1, 3, 224, 224]</td>
+              </tr>
+            
+          </tbody>
+        </table>
+      </div>
+
+      <h2 class="h4">Layers</h2>
+      <div class="table-responsive">
+        <table class="table table-striped table-sm font-monospace">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Name</th>
+              <th scope="col">Type</th>
+              <th scope="col">Input shape</th>
+              <th scope="col">Output shape</th>
+              <th scope="col" class="text-end">FLOPs</th>
+              <th scope="col" class="text-end">Memory usage (Byte)</th>
+              <th scope="col" class="text-end">Params count</th>
+            </tr>
+          </thead>
+          <tbody>
+            
+              <tr>
+                <th>1</th>
+                <td>/conv1/Conv</td>
+                <td>Conv</td>
+                <td>
+                  
+                    data: [1, 3, 224, 224] <br>
+                  
+                    onnx::Conv_497: [64, 3, 7, 7] <br>
+                  
+                    onnx::Conv_498: [64] <br>
+                  
+                </td>
+                <td>
+                  
+                    /conv1/Conv_output_0: [1, 64, 112, 112] <br>
+                  
+                </td>
+                <td class="text-end">236,830,720</td>
+                <td class="text-end">962,816</td>
+                <td class="text-end">9,472</td>
+              </tr>
+            
+              <tr>
+                <th>2</th>
+                <td>/relu/Relu</td>
+                <td>Relu</td>
+                <td>
+                  
+                    /conv1/Conv_output_0: [1, 64, 112, 112] <br>
+                  
+                </td>
+                <td>
+                  
+                    /relu/Relu_output_0: [1, 64, 112, 112] <br>
+                  
+                </td>
+                <td class="text-end">802,816</td>
+                <td class="text-end">1,605,632</td>
+                <td class="text-end">0</td>
+              </tr>
+            
+              <tr>
+                <th>3</th>
+                <td>/maxpool/MaxPool</td>
+                <td>MaxPool</td>
+                <td>
+                  
+                    /relu/Relu_output_0: [1, 64, 112, 112] <br>
+                  
+                </td>
+                <td>
+                  
+                    /maxpool/MaxPool_output_0: [1, 64, 56, 56] <br>
+                  
+                </td>
+                <td class="text-end">1,806,336</td>
+                <td class="text-end">1,003,520</td>
+                <td class="text-end">0</td>
+              </tr>
+            
+              <tr>
+                <th>4</th>
+                <td>/layer1/layer1.0/conv1/Conv</td>
+                <td>Conv</td>
+                <td>
+                  
+                    /maxpool/MaxPool_output_0: [1, 64, 56, 56] <br>
+                  
+                    onnx::Conv_500: [64, 64, 1, 1] <br>
+                  
+                    onnx::Conv_501: [64] <br>
+                  
+                </td>
+                <td>
+                  
+                    /layer1/layer1.0/conv1/Conv_output_0: [1, 64, 56, 56] <br>
+                  
+                </td>
+                <td class="text-end">25,890,816</td>
+                <td class="text-end">405,568</td>
+                <td class="text-end">4,160</td>
+              </tr>
+            
+              <tr>
+                <th>5</th>
+                <td>/layer1/layer1.0/relu/Relu</td>
+                <td>Relu</td>
+                <td>
+                  
+                    /layer1/layer1.0/conv1/Conv_output_0: [1, 64, 56, 56] <br>
+                  
+                </td>
+                <td>
+                  
+                    /layer1/layer1.0/relu/Relu_output_0: [1, 64, 56, 56] <br>
+                  
+                </td>
+                <td class="text-end">200,704</td>
+                <td class="text-end">401,408</td>
+                <td class="text-end">0</td>
+              </tr>
+            
+              <tr>
+                <th>6</th>
+                <td>/layer1/layer1.0/conv2/Conv</td>
+                <td>Conv</td>
+                <td>
+                  
+                    /layer1/layer1.0/relu/Relu_output_0: [1, 64, 56, 56] <br>
+                  
+                    onnx::Conv_503: [64, 64, 3, 3] <br>
+                  
+                    onnx::Conv_504: [64] <br>
+                  
+                </td>
+                <td>
+                  
+                    /layer1/layer1.0/conv2/Conv_output_0: [1, 64, 56, 56] <br>
+                  
+                </td>
+                <td class="text-end">231,411,712</td>
+                <td class="text-end">438,336</td>
+                <td class="text-end">36,928</td>
+              </tr>
+            
+              <tr>
+                <th>7</th>
+                <td>/layer1/layer1.0/relu_1/Relu</td>
+                <td>Relu</td>
+                <td>
+                  
+                    /layer1/layer1.0/conv2/Conv_output_0: [1, 64, 56, 56] <br>
+                  
+                </td>
+                <td>
+                  
+                    /layer1/layer1.0/relu_1/Relu_output_0: [1, 64, 56, 56] <br>
+                  
+                </td>
+                <td class="text-end">200,704</td>
+                <td class="text-end">401,408</td>
+                <td class="text-end">0</td>
+              </tr>
+            
+              <tr>
+                <th>8</th>
+                <td>/layer1/layer1.0/conv3/Conv</td>
+                <td>Conv</td>
+                <td>
+                  
+                    /layer1/layer1.0/relu_1/Relu_output_0: [1, 64, 56, 56] <br>
+                  
+                    onnx::Conv_506: [256, 64, 1, 1] <br>
+                  
+                    onnx::Conv_507: [256] <br>
+                  
+                </td>
+                <td>
+                  
+                    /layer1/layer1.0/conv3/Conv_output_0: [1, 256, 56, 56] <br>
+                  
+                </td>
+                <td class="text-end">103,563,264</td>
+                <td class="text-end">1,020,160</td>
+                <td class="text-end">16,640</td>
+              </tr>
+            
+              <tr>
+                <th>9</th>
+                <td>/layer1/layer1.0/downsample/downsample.0/Conv</td>
+                <td>Conv</td>
+                <td>
+                  
+                    /maxpool/MaxPool_output_0: [1, 64, 56, 56] <br>
+                  
+                    onnx::Conv_509: [256, 64, 1, 1] <br>
+                  
+                    onnx::Conv_510: [256] <br>
+                  
+                </td>
+                <td>
+                  
+                    /layer1/layer1.0/downsample/downsample.0/Conv_output_0: [1, 256, 56, 56] <br>
+                  
+                </td>
+                <td class="text-end">103,563,264</td>
+                <td class="text-end">1,020,160</td>
+                <td class="text-end">16,640</td>
+              </tr>
+            
+              <tr>
+                <th>10</th>
+                <td>/layer1/layer1.0/Add</td>
+                <td>Add</td>
+                <td>
+                  
+                    /layer1/layer1.0/conv3/Conv_output_0: [1, 256, 56, 56] <br>
+                  
+                    /layer1/layer1.0/downsample/downsample.0/Conv_output_0: [1, 256, 56, 56] <br>
+                  
+                </td>
+                <td>
+                  
+                    /layer1/layer1.0/Add_output_0: [1, 256, 56, 56] <br>
+                  
+                </td>
+                <td class="text-end">802,816</td>
+                <td class="text-end">2,408,448</td>
+                <td class="text-end">0</td>
+              </tr>
+            
+              <tr>
+                <th>11</th>
+                <td>/layer1/layer1.0/relu_2/Relu</td>
+                <td>Relu</td>
+                <td>
+                  
+                    /layer1/layer1.0/Add_output_0: [1, 256, 56, 56] <br>
+                  
+                </td>
+                <td>
+                  
+                    /layer1/layer1.0/relu_2/Relu_output_0: [1, 256, 56, 56] <br>
+                  
+                </td>
+                <td class="text-end">802,816</td>
+                <td class="text-end">1,605,632</td>
+                <td class="text-end">0</td>
+              </tr>
+            
+              <tr>
+                <th>12</th>
+                <td>/layer1/layer1.1/conv1/Conv</td>
+                <td>Conv</td>
+                <td>
+                  
+                    /layer1/layer1.0/relu_2/Relu_output_0: [1, 256, 56, 56] <br>
+                  
+                    onnx::Conv_512: [64, 256, 1, 1] <br>
+                  
+                    onnx::Conv_513: [64] <br>
+                  
+                </td>
+                <td>
+                  
+                    /layer1/layer1.1/conv1/Conv_output_0: [1, 64, 56, 56] <br>
+                  
+                </td>
+                <td class="text-end">102,961,152</td>
+                <td class="text-end">1,019,968</td>
+                <td class="text-end">16,448</td>
+              </tr>
+            
+              <tr>
+                <th>13</th>
+                <td>/layer1/layer1.1/relu/Relu</td>
+                <td>Relu</td>
+                <td>
+                  
+                    /layer1/layer1.1/conv1/Conv_output_0: [1, 64, 56, 56] <br>
+                  
+                </td>
+                <td>
+                  
+                    /layer1/layer1.1/relu/Relu_output_0: [1, 64, 56, 56] <br>
+                  
+                </td>
+                <td class="text-end">200,704</td>
+                <td class="text-end">401,408</td>
+                <td class="text-end">0</td>
+              </tr>
+            
+              <tr>
+                <th>14</th>
+                <td>/layer1/layer1.1/conv2/Conv</td>
+                <td>Conv</td>
+                <td>
+                  
+                    /layer1/layer1.1/relu/Relu_output_0: [1, 64, 56, 56] <br>
+                  
+                    onnx::Conv_515: [64, 64, 3, 3] <br>
+                  
+                    onnx::Conv_516: [64] <br>
+                  
+                </td>
+                <td>
+                  
+                    /layer1/layer1.1/conv2/Conv_output_0: [1, 64, 56, 56] <br>
+                  
+                </td>
+                <td class="text-end">231,411,712</td>
+                <td class="text-end">438,336</td>
+                <td class="text-end">36,928</td>
+              </tr>
+            
+              <tr>
+                <th>15</th>
+                <td>/layer1/layer1.1/relu_1/Relu</td>
+                <td>Relu</td>
+                <td>
+                  
+                    /layer1/layer1.1/conv2/Conv_output_0: [1, 64, 56, 56] <br>
+                  
+                </td>
+                <td>
+                  
+                    /layer1/layer1.1/relu_1/Relu_output_0: [1, 64, 56, 56] <br>
+                  
+                </td>
+                <td class="text-end">200,704</td>
+                <td class="text-end">401,408</td>
+                <td class="text-end">0</td>
+              </tr>
+            
+              <tr>
+                <th>16</th>
+                <td>/layer1/layer1.1/conv3/Conv</td>
+                <td>Conv</td>
+                <td>
+                  
+                    /layer1/layer1.1/relu_1/Relu_output_0: [1, 64, 56, 56] <br>
+                  
+                    onnx::Conv_518: [256, 64, 1, 1] <br>
+                  
+                    onnx::Conv_519: [256] <br>
+                  
+                </td>
+                <td>
+                  
+                    /layer1/layer1.1/conv3/Conv_output_0: [1, 256, 56, 56] <br>
+                  
+                </td>
+                <td class="text-end">103,563,264</td>
+                <td class="text-end">1,020,160</td>
+                <td class="text-end">16,640</td>
+              </tr>
+            
+              <tr>
+                <th>17</th>
+                <td>/layer1/layer1.1/Add</td>
+                <td>Add</td>
+                <td>
+                  
+                    /layer1/layer1.1/conv3/Conv_output_0: [1, 256, 56, 56] <br>
+                  
+                    /layer1/layer1.0/relu_2/Relu_output_0: [1, 256, 56, 56] <br>
+                  
+                </td>
+                <td>
+                  
+                    /layer1/layer1.1/Add_output_0: [1, 256, 56, 56] <br>
+                  
+                </td>
+                <td class="text-end">802,816</td>
+                <td class="text-end">2,408,448</td>
+                <td class="text-end">0</td>
+              </tr>
+            
+              <tr>
+                <th>18</th>
+                <td>/layer1/layer1.1/relu_2/Relu</td>
+                <td>Relu</td>
+                <td>
+                  
+                    /layer1/layer1.1/Add_output_0: [1, 256, 56, 56] <br>
+                  
+                </td>
+                <td>
+                  
+                    /layer1/layer1.1/relu_2/Relu_output_0: [1, 256, 56, 56] <br>
+                  
+                </td>
+                <td class="text-end">802,816</td>
+                <td class="text-end">1,605,632</td>
+                <td class="text-end">0</td>
+              </tr>
+            
+              <tr>
+                <th>19</th>
+                <td>/layer1/layer1.2/conv1/Conv</td>
+                <td>Conv</td>
+                <td>
+                  
+                    /layer1/layer1.1/relu_2/Relu_output_0: [1, 256, 56, 56] <br>
+                  
+                    onnx::Conv_521: [64, 256, 1, 1] <br>
+                  
+                    onnx::Conv_522: [64] <br>
+                  
+                </td>
+                <td>
+                  
+                    /layer1/layer1.2/conv1/Conv_output_0: [1, 64, 56, 56] <br>
+                  
+                </td>
+                <td class="text-end">102,961,152</td>
+                <td class="text-end">1,019,968</td>
+                <td class="text-end">16,448</td>
+              </tr>
+            
+              <tr>
+                <th>20</th>
+                <td>/layer1/layer1.2/relu/Relu</td>
+                <td>Relu</td>
+                <td>
+                  
+                    /layer1/layer1.2/conv1/Conv_output_0: [1, 64, 56, 56] <br>
+                  
+                </td>
+                <td>
+                  
+                    /layer1/layer1.2/relu/Relu_output_0: [1, 64, 56, 56] <br>
+                  
+                </td>
+                <td class="text-end">200,704</td>
+                <td class="text-end">401,408</td>
+                <td class="text-end">0</td>
+              </tr>
+            
+              <tr>
+                <th>21</th>
+                <td>/layer1/layer1.2/conv2/Conv</td>
+                <td>Conv</td>
+                <td>
+                  
+                    /layer1/layer1.2/relu/Relu_output_0: [1, 64, 56, 56] <br>
+                  
+                    onnx::Conv_524: [64, 64, 3, 3] <br>
+                  
+                    onnx::Conv_525: [64] <br>
+                  
+                </td>
+                <td>
+                  
+                    /layer1/layer1.2/conv2/Conv_output_0: [1, 64, 56, 56] <br>
+                  
+                </td>
+                <td class="text-end">231,411,712</td>
+                <td class="text-end">438,336</td>
+                <td class="text-end">36,928</td>
+              </tr>
+            
+              <tr>
+                <th>22</th>
+                <td>/layer1/layer1.2/relu_1/Relu</td>
+                <td>Relu</td>
+                <td>
+                  
+                    /layer1/layer1.2/conv2/Conv_output_0: [1, 64, 56, 56] <br>
+                  
+                </td>
+                <td>
+                  
+                    /layer1/layer1.2/relu_1/Relu_output_0: [1, 64, 56, 56] <br>
+                  
+                </td>
+                <td class="text-end">200,704</td>
+                <td class="text-end">401,408</td>
+                <td class="text-end">0</td>
+              </tr>
+            
+              <tr>
+                <th>23</th>
+                <td>/layer1/layer1.2/conv3/Conv</td>
+                <td>Conv</td>
+                <td>
+                  
+                    /layer1/layer1.2/relu_1/Relu_output_0: [1, 64, 56, 56] <br>
+                  
+                    onnx::Conv_527: [256, 64, 1, 1] <br>
+                  
+                    onnx::Conv_528: [256] <br>
+                  
+                </td>
+                <td>
+                  
+                    /layer1/layer1.2/conv3/Conv_output_0: [1, 256, 56, 56] <br>
+                  
+                </td>
+                <td class="text-end">103,563,264</td>
+                <td class="text-end">1,020,160</td>
+                <td class="text-end">16,640</td>
+              </tr>
+            
+              <tr>
+                <th>24</th>
+                <td>/layer1/layer1.2/Add</td>
+                <td>Add</td>
+                <td>
+                  
+                    /layer1/layer1.2/conv3/Conv_output_0: [1, 256, 56, 56] <br>
+                  
+                    /layer1/layer1.1/relu_2/Relu_output_0: [1, 256, 56, 56] <br>
+                  
+                </td>
+                <td>
+                  
+                    /layer1/layer1.2/Add_output_0: [1, 256, 56, 56] <br>
+                  
+                </td>
+                <td class="text-end">802,816</td>
+                <td class="text-end">2,408,448</td>
+                <td class="text-end">0</td>
+              </tr>
+            
+              <tr>
+                <th>25</th>
+                <td>/layer1/layer1.2/relu_2/Relu</td>
+                <td>Relu</td>
+                <td>
+                  
+                    /layer1/layer1.2/Add_output_0: [1, 256, 56, 56] <br>
+                  
+                </td>
+                <td>
+                  
+                    /layer1/layer1.2/relu_2/Relu_output_0: [1, 256, 56, 56] <br>
+                  
+                </td>
+                <td class="text-end">802,816</td>
+                <td class="text-end">1,605,632</td>
+                <td class="text-end">0</td>
+              </tr>
+            
+              <tr>
+                <th>26</th>
+                <td>/layer2/layer2.0/conv1/Conv</td>
+                <td>Conv</td>
+                <td>
+                  
+                    /layer1/layer1.2/relu_2/Relu_output_0: [1, 256, 56, 56] <br>
+                  
+                    onnx::Conv_530: [128, 256, 1, 1] <br>
+                  
+                    onnx::Conv_531: [128] <br>
+                  
+                </td>
+                <td>
+                  
+                    /layer2/layer2.0/conv1/Conv_output_0: [1, 128, 56, 56] <br>
+                  
+                </td>
+                <td class="text-end">205,922,304</td>
+                <td class="text-end">1,237,120</td>
+                <td class="text-end">32,896</td>
+              </tr>
+            
+              <tr>
+                <th>27</th>
+                <td>/layer2/layer2.0/relu/Relu</td>
+                <td>Relu</td>
+                <td>
+                  
+                    /layer2/layer2.0/conv1/Conv_output_0: [1, 128, 56, 56] <br>
+                  
+                </td>
+                <td>
+                  
+                    /layer2/layer2.0/relu/Relu_output_0: [1, 128, 56, 56] <br>
+                  
+                </td>
+                <td class="text-end">401,408</td>
+                <td class="text-end">802,816</td>
+                <td class="text-end">0</td>
+              </tr>
+            
+              <tr>
+                <th>28</th>
+                <td>/layer2/layer2.0/conv2/Conv</td>
+                <td>Conv</td>
+                <td>
+                  
+                    /layer2/layer2.0/relu/Relu_output_0: [1, 128, 56, 56] <br>
+                  
+                    onnx::Conv_533: [128, 128, 3, 3] <br>
+                  
+                    onnx::Conv_534: [128] <br>
+                  
+                </td>
+                <td>
+                  
+                    /layer2/layer2.0/conv2/Conv_output_0: [1, 128, 28, 28] <br>
+                  
+                </td>
+                <td class="text-end">231,311,360</td>
+                <td class="text-end">649,344</td>
+                <td class="text-end">147,584</td>
+              </tr>
+            
+              <tr>
+                <th>29</th>
+                <td>/layer2/layer2.0/relu_1/Relu</td>
+                <td>Relu</td>
+                <td>
+                  
+                    /layer2/layer2.0/conv2/Conv_output_0: [1, 128, 28, 28] <br>
+                  
+                </td>
+                <td>
+                  
+                    /layer2/layer2.0/relu_1/Relu_output_0: [1, 128, 28, 28] <br>
+                  
+                </td>
+                <td class="text-end">100,352</td>
+                <td class="text-end">200,704</td>
+                <td class="text-end">0</td>
+              </tr>
+            
+              <tr>
+                <th>30</th>
+                <td>/layer2/layer2.0/conv3/Conv</td>
+                <td>Conv</td>
+                <td>
+                  
+                    /layer2/layer2.0/relu_1/Relu_output_0: [1, 128, 28, 28] <br>
+                  
+                    onnx::Conv_536: [512, 128, 1, 1] <br>
+                  
+                    onnx::Conv_537: [512] <br>
+                  
+                </td>
+                <td>
+                  
+                    /layer2/layer2.0/conv3/Conv_output_0: [1, 512, 28, 28] <br>
+                  
+                </td>
+                <td class="text-end">103,161,856</td>
+                <td class="text-end">567,808</td>
+                <td class="text-end">66,048</td>
+              </tr>
+            
+              <tr>
+                <th>31</th>
+                <td>/layer2/layer2.0/downsample/downsample.0/Conv</td>
+                <td>Conv</td>
+                <td>
+                  
+                    /layer1/layer1.2/relu_2/Relu_output_0: [1, 256, 56, 56] <br>
+                  
+                    onnx::Conv_539: [512, 256, 1, 1] <br>
+                  
+                    onnx::Conv_540: [512] <br>
+                  
+                </td>
+                <td>
+                  
+                    /layer2/layer2.0/downsample/downsample.0/Conv_output_0: [1, 512, 28, 28] <br>
+                  
+                </td>
+                <td class="text-end">205,922,304</td>
+                <td class="text-end">733,696</td>
+                <td class="text-end">131,584</td>
+              </tr>
+            
+              <tr>
+                <th>32</th>
+                <td>/layer2/layer2.0/Add</td>
+                <td>Add</td>
+                <td>
+                  
+                    /layer2/layer2.0/conv3/Conv_output_0: [1, 512, 28, 28] <br>
+                  
+                    /layer2/layer2.0/downsample/downsample.0/Conv_output_0: [1, 512, 28, 28] <br>
+                  
+                </td>
+                <td>
+                  
+                    /layer2/layer2.0/Add_output_0: [1, 512, 28, 28] <br>
+                  
+                </td>
+                <td class="text-end">401,408</td>
+                <td class="text-end">1,204,224</td>
+                <td class="text-end">0</td>
+              </tr>
+            
+              <tr>
+                <th>33</th>
+                <td>/layer2/layer2.0/relu_2/Relu</td>
+                <td>Relu</td>
+                <td>
+                  
+                    /layer2/layer2.0/Add_output_0: [1, 512, 28, 28] <br>
+                  
+                </td>
+                <td>
+                  
+                    /layer2/layer2.0/relu_2/Relu_output_0: [1, 512, 28, 28] <br>
+                  
+                </td>
+                <td class="text-end">401,408</td>
+                <td class="text-end">802,816</td>
+                <td class="text-end">0</td>
+              </tr>
+            
+              <tr>
+                <th>34</th>
+                <td>/layer2/layer2.1/conv1/Conv</td>
+                <td>Conv</td>
+                <td>
+                  
+                    /layer2/layer2.0/relu_2/Relu_output_0: [1, 512, 28, 28] <br>
+                  
+                    onnx::Conv_542: [128, 512, 1, 1] <br>
+                  
+                    onnx::Conv_543: [128] <br>
+                  
+                </td>
+                <td>
+                  
+                    /layer2/layer2.1/conv1/Conv_output_0: [1, 128, 28, 28] <br>
+                  
+                </td>
+                <td class="text-end">102,860,800</td>
+                <td class="text-end">567,424</td>
+                <td class="text-end">65,664</td>
+              </tr>
+            
+              <tr>
+                <th>35</th>
+                <td>/layer2/layer2.1/relu/Relu</td>
+                <td>Relu</td>
+                <td>
+                  
+                    /layer2/layer2.1/conv1/Conv_output_0: [1, 128, 28, 28] <br>
+                  
+                </td>
+                <td>
+                  
+                    /layer2/layer2.1/relu/Relu_output_0: [1, 128, 28, 28] <br>
+                  
+                </td>
+                <td class="text-end">100,352</td>
+                <td class="text-end">200,704</td>
+                <td class="text-end">0</td>
+              </tr>
+            
+              <tr>
+                <th>36</th>
+                <td>/layer2/layer2.1/conv2/Conv</td>
+                <td>Conv</td>
+                <td>
+                  
+                    /layer2/layer2.1/relu/Relu_output_0: [1, 128, 28, 28] <br>
+                  
+                    onnx::Conv_545: [128, 128, 3, 3] <br>
+                  
+                    onnx::Conv_546: [128] <br>
+                  
+                </td>
+                <td>
+                  
+                    /layer2/layer2.1/conv2/Conv_output_0: [1, 128, 28, 28] <br>
+                  
+                </td>
+                <td class="text-end">231,311,360</td>
+                <td class="text-end">348,288</td>
+                <td class="text-end">147,584</td>
+              </tr>
+            
+              <tr>
+                <th>37</th>
+                <td>/layer2/layer2.1/relu_1/Relu</td>
+                <td>Relu</td>
+                <td>
+                  
+                    /layer2/layer2.1/conv2/Conv_output_0: [1, 128, 28, 28] <br>
+                  
+                </td>
+                <td>
+                  
+                    /layer2/layer2.1/relu_1/Relu_output_0: [1, 128, 28, 28] <br>
+                  
+                </td>
+                <td class="text-end">100,352</td>
+                <td class="text-end">200,704</td>
+                <td class="text-end">0</td>
+              </tr>
+            
+              <tr>
+                <th>38</th>
+                <td>/layer2/layer2.1/conv3/Conv</td>
+                <td>Conv</td>
+                <td>
+                  
+                    /layer2/layer2.1/relu_1/Relu_output_0: [1, 128, 28, 28] <br>
+                  
+                    onnx::Conv_548: [512, 128, 1, 1] <br>
+                  
+                    onnx::Conv_549: [512] <br>
+                  
+                </td>
+                <td>
+                  
+                    /layer2/layer2.1/conv3/Conv_output_0: [1, 512, 28, 28] <br>
+                  
+                </td>
+                <td class="text-end">103,161,856</td>
+                <td class="text-end">567,808</td>
+                <td class="text-end">66,048</td>
+              </tr>
+            
+              <tr>
+                <th>39</th>
+                <td>/layer2/layer2.1/Add</td>
+                <td>Add</td>
+                <td>
+                  
+                    /layer2/layer2.1/conv3/Conv_output_0: [1, 512, 28, 28] <br>
+                  
+                    /layer2/layer2.0/relu_2/Relu_output_0: [1, 512, 28, 28] <br>
+                  
+                </td>
+                <td>
+                  
+                    /layer2/layer2.1/Add_output_0: [1, 512, 28, 28] <br>
+                  
+                </td>
+                <td class="text-end">401,408</td>
+                <td class="text-end">1,204,224</td>
+                <td class="text-end">0</td>
+              </tr>
+            
+              <tr>
+                <th>40</th>
+                <td>/layer2/layer2.1/relu_2/Relu</td>
+                <td>Relu</td>
+                <td>
+                  
+                    /layer2/layer2.1/Add_output_0: [1, 512, 28, 28] <br>
+                  
+                </td>
+                <td>
+                  
+                    /layer2/layer2.1/relu_2/Relu_output_0: [1, 512, 28, 28] <br>
+                  
+                </td>
+                <td class="text-end">401,408</td>
+                <td class="text-end">802,816</td>
+                <td class="text-end">0</td>
+              </tr>
+            
+              <tr>
+                <th>41</th>
+                <td>/layer2/layer2.2/conv1/Conv</td>
+                <td>Conv</td>
+                <td>
+                  
+                    /layer2/layer2.1/relu_2/Relu_output_0: [1, 512, 28, 28] <br>
+                  
+                    onnx::Conv_551: [128, 512, 1, 1] <br>
+                  
+                    onnx::Conv_552: [128] <br>
+                  
+                </td>
+                <td>
+                  
+                    /layer2/layer2.2/conv1/Conv_output_0: [1, 128, 28, 28] <br>
+                  
+                </td>
+                <td class="text-end">102,860,800</td>
+                <td class="text-end">567,424</td>
+                <td class="text-end">65,664</td>
+              </tr>
+            
+              <tr>
+                <th>42</th>
+                <td>/layer2/layer2.2/relu/Relu</td>
+                <td>Relu</td>
+                <td>
+                  
+                    /layer2/layer2.2/conv1/Conv_output_0: [1, 128, 28, 28] <br>
+                  
+                </td>
+                <td>
+                  
+                    /layer2/layer2.2/relu/Relu_output_0: [1, 128, 28, 28] <br>
+                  
+                </td>
+                <td class="text-end">100,352</td>
+                <td class="text-end">200,704</td>
+                <td class="text-end">0</td>
+              </tr>
+            
+              <tr>
+                <th>43</th>
+                <td>/layer2/layer2.2/conv2/Conv</td>
+                <td>Conv</td>
+                <td>
+                  
+                    /layer2/layer2.2/relu/Relu_output_0: [1, 128, 28, 28] <br>
+                  
+                    onnx::Conv_554: [128, 128, 3, 3] <br>
+                  
+                    onnx::Conv_555: [128] <br>
+                  
+                </td>
+                <td>
+                  
+                    /layer2/layer2.2/conv2/Conv_output_0: [1, 128, 28, 28] <br>
+                  
+                </td>
+                <td class="text-end">231,311,360</td>
+                <td class="text-end">348,288</td>
+                <td class="text-end">147,584</td>
+              </tr>
+            
+              <tr>
+                <th>44</th>
+                <td>/layer2/layer2.2/relu_1/Relu</td>
+                <td>Relu</td>
+                <td>
+                  
+                    /layer2/layer2.2/conv2/Conv_output_0: [1, 128, 28, 28] <br>
+                  
+                </td>
+                <td>
+                  
+                    /layer2/layer2.2/relu_1/Relu_output_0: [1, 128, 28, 28] <br>
+                  
+                </td>
+                <td class="text-end">100,352</td>
+                <td class="text-end">200,704</td>
+                <td class="text-end">0</td>
+              </tr>
+            
+              <tr>
+                <th>45</th>
+                <td>/layer2/layer2.2/conv3/Conv</td>
+                <td>Conv</td>
+                <td>
+                  
+                    /layer2/layer2.2/relu_1/Relu_output_0: [1, 128, 28, 28] <br>
+                  
+                    onnx::Conv_557: [512, 128, 1, 1] <br>
+                  
+                    onnx::Conv_558: [512] <br>
+                  
+                </td>
+                <td>
+                  
+                    /layer2/layer2.2/conv3/Conv_output_0: [1, 512, 28, 28] <br>
+                  
+                </td>
+                <td class="text-end">103,161,856</td>
+                <td class="text-end">567,808</td>
+                <td class="text-end">66,048</td>
+              </tr>
+            
+              <tr>
+                <th>46</th>
+                <td>/layer2/layer2.2/Add</td>
+                <td>Add</td>
+                <td>
+                  
+                    /layer2/layer2.2/conv3/Conv_output_0: [1, 512, 28, 28] <br>
+                  
+                    /layer2/layer2.1/relu_2/Relu_output_0: [1, 512, 28, 28] <br>
+                  
+                </td>
+                <td>
+                  
+                    /layer2/layer2.2/Add_output_0: [1, 512, 28, 28] <br>
+                  
+                </td>
+                <td class="text-end">401,408</td>
+                <td class="text-end">1,204,224</td>
+                <td class="text-end">0</td>
+              </tr>
+            
+              <tr>
+                <th>47</th>
+                <td>/layer2/layer2.2/relu_2/Relu</td>
+                <td>Relu</td>
+                <td>
+                  
+                    /layer2/layer2.2/Add_output_0: [1, 512, 28, 28] <br>
+                  
+                </td>
+                <td>
+                  
+                    /layer2/layer2.2/relu_2/Relu_output_0: [1, 512, 28, 28] <br>
+                  
+                </td>
+                <td class="text-end">401,408</td>
+                <td class="text-end">802,816</td>
+                <td class="text-end">0</td>
+              </tr>
+            
+              <tr>
+                <th>48</th>
+                <td>/layer2/layer2.3/conv1/Conv</td>
+                <td>Conv</td>
+                <td>
+                  
+                    /layer2/layer2.2/relu_2/Relu_output_0: [1, 512, 28, 28] <br>
+                  
+                    onnx::Conv_560: [128, 512, 1, 1] <br>
+                  
+                    onnx::Conv_561: [128] <br>
+                  
+                </td>
+                <td>
+                  
+                    /layer2/layer2.3/conv1/Conv_output_0: [1, 128, 28, 28] <br>
+                  
+                </td>
+                <td class="text-end">102,860,800</td>
+                <td class="text-end">567,424</td>
+                <td class="text-end">65,664</td>
+              </tr>
+            
+              <tr>
+                <th>49</th>
+                <td>/layer2/layer2.3/relu/Relu</td>
+                <td>Relu</td>
+                <td>
+                  
+                    /layer2/layer2.3/conv1/Conv_output_0: [1, 128, 28, 28] <br>
+                  
+                </td>
+                <td>
+                  
+                    /layer2/layer2.3/relu/Relu_output_0: [1, 128, 28, 28] <br>
+                  
+                </td>
+                <td class="text-end">100,352</td>
+                <td class="text-end">200,704</td>
+                <td class="text-end">0</td>
+              </tr>
+            
+              <tr>
+                <th>50</th>
+                <td>/layer2/layer2.3/conv2/Conv</td>
+                <td>Conv</td>
+                <td>
+                  
+                    /layer2/layer2.3/relu/Relu_output_0: [1, 128, 28, 28] <br>
+                  
+                    onnx::Conv_563: [128, 128, 3, 3] <br>
+                  
+                    onnx::Conv_564: [128] <br>
+                  
+                </td>
+                <td>
+                  
+                    /layer2/layer2.3/conv2/Conv_output_0: [1, 128, 28, 28] <br>
+                  
+                </td>
+                <td class="text-end">231,311,360</td>
+                <td class="text-end">348,288</td>
+                <td class="text-end">147,584</td>
+              </tr>
+            
+              <tr>
+                <th>51</th>
+                <td>/layer2/layer2.3/relu_1/Relu</td>
+                <td>Relu</td>
+                <td>
+                  
+                    /layer2/layer2.3/conv2/Conv_output_0: [1, 128, 28, 28] <br>
+                  
+                </td>
+                <td>
+                  
+                    /layer2/layer2.3/relu_1/Relu_output_0: [1, 128, 28, 28] <br>
+                  
+                </td>
+                <td class="text-end">100,352</td>
+                <td class="text-end">200,704</td>
+                <td class="text-end">0</td>
+              </tr>
+            
+              <tr>
+                <th>52</th>
+                <td>/layer2/layer2.3/conv3/Conv</td>
+                <td>Conv</td>
+                <td>
+                  
+                    /layer2/layer2.3/relu_1/Relu_output_0: [1, 128, 28, 28] <br>
+                  
+                    onnx::Conv_566: [512, 128, 1, 1] <br>
+                  
+                    onnx::Conv_567: [512] <br>
+                  
+                </td>
+                <td>
+                  
+                    /layer2/layer2.3/conv3/Conv_output_0: [1, 512, 28, 28] <br>
+                  
+                </td>
+                <td class="text-end">103,161,856</td>
+                <td class="text-end">567,808</td>
+                <td class="text-end">66,048</td>
+              </tr>
+            
+              <tr>
+                <th>53</th>
+                <td>/layer2/layer2.3/Add</td>
+                <td>Add</td>
+                <td>
+                  
+                    /layer2/layer2.3/conv3/Conv_output_0: [1, 512, 28, 28] <br>
+                  
+                    /layer2/layer2.2/relu_2/Relu_output_0: [1, 512, 28, 28] <br>
+                  
+                </td>
+                <td>
+                  
+                    /layer2/layer2.3/Add_output_0: [1, 512, 28, 28] <br>
+                  
+                </td>
+                <td class="text-end">401,408</td>
+                <td class="text-end">1,204,224</td>
+                <td class="text-end">0</td>
+              </tr>
+            
+              <tr>
+                <th>54</th>
+                <td>/layer2/layer2.3/relu_2/Relu</td>
+                <td>Relu</td>
+                <td>
+                  
+                    /layer2/layer2.3/Add_output_0: [1, 512, 28, 28] <br>
+                  
+                </td>
+                <td>
+                  
+                    /layer2/layer2.3/relu_2/Relu_output_0: [1, 512, 28, 28] <br>
+                  
+                </td>
+                <td class="text-end">401,408</td>
+                <td class="text-end">802,816</td>
+                <td class="text-end">0</td>
+              </tr>
+            
+              <tr>
+                <th>55</th>
+                <td>/layer3/layer3.0/conv1/Conv</td>
+                <td>Conv</td>
+                <td>
+                  
+                    /layer2/layer2.3/relu_2/Relu_output_0: [1, 512, 28, 28] <br>
+                  
+                    onnx::Conv_569: [256, 512, 1, 1] <br>
+                  
+                    onnx::Conv_570: [256] <br>
+                  
+                </td>
+                <td>
+                  
+                    /layer3/layer3.0/conv1/Conv_output_0: [1, 256, 28, 28] <br>
+                  
+                </td>
+                <td class="text-end">205,721,600</td>
+                <td class="text-end">733,440</td>
+                <td class="text-end">131,328</td>
+              </tr>
+            
+              <tr>
+                <th>56</th>
+                <td>/layer3/layer3.0/relu/Relu</td>
+                <td>Relu</td>
+                <td>
+                  
+                    /layer3/layer3.0/conv1/Conv_output_0: [1, 256, 28, 28] <br>
+                  
+                </td>
+                <td>
+                  
+                    /layer3/layer3.0/relu/Relu_output_0: [1, 256, 28, 28] <br>
+                  
+                </td>
+                <td class="text-end">200,704</td>
+                <td class="text-end">401,408</td>
+                <td class="text-end">0</td>
+              </tr>
+            
+              <tr>
+                <th>57</th>
+                <td>/layer3/layer3.0/conv2/Conv</td>
+                <td>Conv</td>
+                <td>
+                  
+                    /layer3/layer3.0/relu/Relu_output_0: [1, 256, 28, 28] <br>
+                  
+                    onnx::Conv_572: [256, 256, 3, 3] <br>
+                  
+                    onnx::Conv_573: [256] <br>
+                  
+                </td>
+                <td>
+                  
+                    /layer3/layer3.0/conv2/Conv_output_0: [1, 256, 14, 14] <br>
+                  
+                </td>
+                <td class="text-end">231,261,184</td>
+                <td class="text-end">840,960</td>
+                <td class="text-end">590,080</td>
+              </tr>
+            
+              <tr>
+                <th>58</th>
+                <td>/layer3/layer3.0/relu_1/Relu</td>
+                <td>Relu</td>
+                <td>
+                  
+                    /layer3/layer3.0/conv2/Conv_output_0: [1, 256, 14, 14] <br>
+                  
+                </td>
+                <td>
+                  
+                    /layer3/layer3.0/relu_1/Relu_output_0: [1, 256, 14, 14] <br>
+                  
+                </td>
+                <td class="text-end">50,176</td>
+                <td class="text-end">100,352</td>
+                <td class="text-end">0</td>
+              </tr>
+            
+              <tr>
+                <th>59</th>
+                <td>/layer3/layer3.0/conv3/Conv</td>
+                <td>Conv</td>
+                <td>
+                  
+                    /layer3/layer3.0/relu_1/Relu_output_0: [1, 256, 14, 14] <br>
+                  
+                    onnx::Conv_575: [1024, 256, 1, 1] <br>
+                  
+                    onnx::Conv_576: [1024] <br>
+                  
+                </td>
+                <td>
+                  
+                    /layer3/layer3.0/conv3/Conv_output_0: [1, 1024, 14, 14] <br>
+                  
+                </td>
+                <td class="text-end">102,961,152</td>
+                <td class="text-end">514,048</td>
+                <td class="text-end">263,168</td>
+              </tr>
+            
+              <tr>
+                <th>60</th>
+                <td>/layer3/layer3.0/downsample/downsample.0/Conv</td>
+                <td>Conv</td>
+                <td>
+                  
+                    /layer2/layer2.3/relu_2/Relu_output_0: [1, 512, 28, 28] <br>
+                  
+                    onnx::Conv_578: [1024, 512, 1, 1] <br>
+                  
+                    onnx::Conv_579: [1024] <br>
+                  
+                </td>
+                <td>
+                  
+                    /layer3/layer3.0/downsample/downsample.0/Conv_output_0: [1, 1024, 14, 14] <br>
+                  
+                </td>
+                <td class="text-end">205,721,600</td>
+                <td class="text-end">826,368</td>
+                <td class="text-end">525,312</td>
+              </tr>
+            
+              <tr>
+                <th>61</th>
+                <td>/layer3/layer3.0/Add</td>
+                <td>Add</td>
+                <td>
+                  
+                    /layer3/layer3.0/conv3/Conv_output_0: [1, 1024, 14, 14] <br>
+                  
+                    /layer3/layer3.0/downsample/downsample.0/Conv_output_0: [1, 1024, 14, 14] <br>
+                  
+                </td>
+                <td>
+                  
+                    /layer3/layer3.0/Add_output_0: [1, 1024, 14, 14] <br>
+                  
+                </td>
+                <td class="text-end">200,704</td>
+                <td class="text-end">602,112</td>
+                <td class="text-end">0</td>
+              </tr>
+            
+              <tr>
+                <th>62</th>
+                <td>/layer3/layer3.0/relu_2/Relu</td>
+                <td>Relu</td>
+                <td>
+                  
+                    /layer3/layer3.0/Add_output_0: [1, 1024, 14, 14] <br>
+                  
+                </td>
+                <td>
+                  
+                    /layer3/layer3.0/relu_2/Relu_output_0: [1, 1024, 14, 14] <br>
+                  
+                </td>
+                <td class="text-end">200,704</td>
+                <td class="text-end">401,408</td>
+                <td class="text-end">0</td>
+              </tr>
+            
+              <tr>
+                <th>63</th>
+                <td>/layer3/layer3.1/conv1/Conv</td>
+                <td>Conv</td>
+                <td>
+                  
+                    /layer3/layer3.0/relu_2/Relu_output_0: [1, 1024, 14, 14] <br>
+                  
+                    onnx::Conv_581: [256, 1024, 1, 1] <br>
+                  
+                    onnx::Conv_582: [256] <br>
+                  
+                </td>
+                <td>
+                  
+                    /layer3/layer3.1/conv1/Conv_output_0: [1, 256, 14, 14] <br>
+                  
+                </td>
+                <td class="text-end">102,810,624</td>
+                <td class="text-end">513,280</td>
+                <td class="text-end">262,400</td>
+              </tr>
+            
+              <tr>
+                <th>64</th>
+                <td>/layer3/layer3.1/relu/Relu</td>
+                <td>Relu</td>
+                <td>
+                  
+                    /layer3/layer3.1/conv1/Conv_output_0: [1, 256, 14, 14] <br>
+                  
+                </td>
+                <td>
+                  
+                    /layer3/layer3.1/relu/Relu_output_0: [1, 256, 14, 14] <br>
+                  
+                </td>
+                <td class="text-end">50,176</td>
+                <td class="text-end">100,352</td>
+                <td class="text-end">0</td>
+              </tr>
+            
+              <tr>
+                <th>65</th>
+                <td>/layer3/layer3.1/conv2/Conv</td>
+                <td>Conv</td>
+                <td>
+                  
+                    /layer3/layer3.1/relu/Relu_output_0: [1, 256, 14, 14] <br>
+                  
+                    onnx::Conv_584: [256, 256, 3, 3] <br>
+                  
+                    onnx::Conv_585: [256] <br>
+                  
+                </td>
+                <td>
+                  
+                    /layer3/layer3.1/conv2/Conv_output_0: [1, 256, 14, 14] <br>
+                  
+                </td>
+                <td class="text-end">231,261,184</td>
+                <td class="text-end">690,432</td>
+                <td class="text-end">590,080</td>
+              </tr>
+            
+              <tr>
+                <th>66</th>
+                <td>/layer3/layer3.1/relu_1/Relu</td>
+                <td>Relu</td>
+                <td>
+                  
+                    /layer3/layer3.1/conv2/Conv_output_0: [1, 256, 14, 14] <br>
+                  
+                </td>
+                <td>
+                  
+                    /layer3/layer3.1/relu_1/Relu_output_0: [1, 256, 14, 14] <br>
+                  
+                </td>
+                <td class="text-end">50,176</td>
+                <td class="text-end">100,352</td>
+                <td class="text-end">0</td>
+              </tr>
+            
+              <tr>
+                <th>67</th>
+                <td>/layer3/layer3.1/conv3/Conv</td>
+                <td>Conv</td>
+                <td>
+                  
+                    /layer3/layer3.1/relu_1/Relu_output_0: [1, 256, 14, 14] <br>
+                  
+                    onnx::Conv_587: [1024, 256, 1, 1] <br>
+                  
+                    onnx::Conv_588: [1024] <br>
+                  
+                </td>
+                <td>
+                  
+                    /layer3/layer3.1/conv3/Conv_output_0: [1, 1024, 14, 14] <br>
+                  
+                </td>
+                <td class="text-end">102,961,152</td>
+                <td class="text-end">514,048</td>
+                <td class="text-end">263,168</td>
+              </tr>
+            
+              <tr>
+                <th>68</th>
+                <td>/layer3/layer3.1/Add</td>
+                <td>Add</td>
+                <td>
+                  
+                    /layer3/layer3.1/conv3/Conv_output_0: [1, 1024, 14, 14] <br>
+                  
+                    /layer3/layer3.0/relu_2/Relu_output_0: [1, 1024, 14, 14] <br>
+                  
+                </td>
+                <td>
+                  
+                    /layer3/layer3.1/Add_output_0: [1, 1024, 14, 14] <br>
+                  
+                </td>
+                <td class="text-end">200,704</td>
+                <td class="text-end">602,112</td>
+                <td class="text-end">0</td>
+              </tr>
+            
+              <tr>
+                <th>69</th>
+                <td>/layer3/layer3.1/relu_2/Relu</td>
+                <td>Relu</td>
+                <td>
+                  
+                    /layer3/layer3.1/Add_output_0: [1, 1024, 14, 14] <br>
+                  
+                </td>
+                <td>
+                  
+                    /layer3/layer3.1/relu_2/Relu_output_0: [1, 1024, 14, 14] <br>
+                  
+                </td>
+                <td class="text-end">200,704</td>
+                <td class="text-end">401,408</td>
+                <td class="text-end">0</td>
+              </tr>
+            
+              <tr>
+                <th>70</th>
+                <td>/layer3/layer3.2/conv1/Conv</td>
+                <td>Conv</td>
+                <td>
+                  
+                    /layer3/layer3.1/relu_2/Relu_output_0: [1, 1024, 14, 14] <br>
+                  
+                    onnx::Conv_590: [256, 1024, 1, 1] <br>
+                  
+                    onnx::Conv_591: [256] <br>
+                  
+                </td>
+                <td>
+                  
+                    /layer3/layer3.2/conv1/Conv_output_0: [1, 256, 14, 14] <br>
+                  
+                </td>
+                <td class="text-end">102,810,624</td>
+                <td class="text-end">513,280</td>
+                <td class="text-end">262,400</td>
+              </tr>
+            
+              <tr>
+                <th>71</th>
+                <td>/layer3/layer3.2/relu/Relu</td>
+                <td>Relu</td>
+                <td>
+                  
+                    /layer3/layer3.2/conv1/Conv_output_0: [1, 256, 14, 14] <br>
+                  
+                </td>
+                <td>
+                  
+                    /layer3/layer3.2/relu/Relu_output_0: [1, 256, 14, 14] <br>
+                  
+                </td>
+                <td class="text-end">50,176</td>
+                <td class="text-end">100,352</td>
+                <td class="text-end">0</td>
+              </tr>
+            
+              <tr>
+                <th>72</th>
+                <td>/layer3/layer3.2/conv2/Conv</td>
+                <td>Conv</td>
+                <td>
+                  
+                    /layer3/layer3.2/relu/Relu_output_0: [1, 256, 14, 14] <br>
+                  
+                    onnx::Conv_593: [256, 256, 3, 3] <br>
+                  
+                    onnx::Conv_594: [256] <br>
+                  
+                </td>
+                <td>
+                  
+                    /layer3/layer3.2/conv2/Conv_output_0: [1, 256, 14, 14] <br>
+                  
+                </td>
+                <td class="text-end">231,261,184</td>
+                <td class="text-end">690,432</td>
+                <td class="text-end">590,080</td>
+              </tr>
+            
+              <tr>
+                <th>73</th>
+                <td>/layer3/layer3.2/relu_1/Relu</td>
+                <td>Relu</td>
+                <td>
+                  
+                    /layer3/layer3.2/conv2/Conv_output_0: [1, 256, 14, 14] <br>
+                  
+                </td>
+                <td>
+                  
+                    /layer3/layer3.2/relu_1/Relu_output_0: [1, 256, 14, 14] <br>
+                  
+                </td>
+                <td class="text-end">50,176</td>
+                <td class="text-end">100,352</td>
+                <td class="text-end">0</td>
+              </tr>
+            
+              <tr>
+                <th>74</th>
+                <td>/layer3/layer3.2/conv3/Conv</td>
+                <td>Conv</td>
+                <td>
+                  
+                    /layer3/layer3.2/relu_1/Relu_output_0: [1, 256, 14, 14] <br>
+                  
+                    onnx::Conv_596: [1024, 256, 1, 1] <br>
+                  
+                    onnx::Conv_597: [1024] <br>
+                  
+                </td>
+                <td>
+                  
+                    /layer3/layer3.2/conv3/Conv_output_0: [1, 1024, 14, 14] <br>
+                  
+                </td>
+                <td class="text-end">102,961,152</td>
+                <td class="text-end">514,048</td>
+                <td class="text-end">263,168</td>
+              </tr>
+            
+              <tr>
+                <th>75</th>
+                <td>/layer3/layer3.2/Add</td>
+                <td>Add</td>
+                <td>
+                  
+                    /layer3/layer3.2/conv3/Conv_output_0: [1, 1024, 14, 14] <br>
+                  
+                    /layer3/layer3.1/relu_2/Relu_output_0: [1, 1024, 14, 14] <br>
+                  
+                </td>
+                <td>
+                  
+                    /layer3/layer3.2/Add_output_0: [1, 1024, 14, 14] <br>
+                  
+                </td>
+                <td class="text-end">200,704</td>
+                <td class="text-end">602,112</td>
+                <td class="text-end">0</td>
+              </tr>
+            
+              <tr>
+                <th>76</th>
+                <td>/layer3/layer3.2/relu_2/Relu</td>
+                <td>Relu</td>
+                <td>
+                  
+                    /layer3/layer3.2/Add_output_0: [1, 1024, 14, 14] <br>
+                  
+                </td>
+                <td>
+                  
+                    /layer3/layer3.2/relu_2/Relu_output_0: [1, 1024, 14, 14] <br>
+                  
+                </td>
+                <td class="text-end">200,704</td>
+                <td class="text-end">401,408</td>
+                <td class="text-end">0</td>
+              </tr>
+            
+              <tr>
+                <th>77</th>
+                <td>/layer3/layer3.3/conv1/Conv</td>
+                <td>Conv</td>
+                <td>
+                  
+                    /layer3/layer3.2/relu_2/Relu_output_0: [1, 1024, 14, 14] <br>
+                  
+                    onnx::Conv_599: [256, 1024, 1, 1] <br>
+                  
+                    onnx::Conv_600: [256] <br>
+                  
+                </td>
+                <td>
+                  
+                    /layer3/layer3.3/conv1/Conv_output_0: [1, 256, 14, 14] <br>
+                  
+                </td>
+                <td class="text-end">102,810,624</td>
+                <td class="text-end">513,280</td>
+                <td class="text-end">262,400</td>
+              </tr>
+            
+              <tr>
+                <th>78</th>
+                <td>/layer3/layer3.3/relu/Relu</td>
+                <td>Relu</td>
+                <td>
+                  
+                    /layer3/layer3.3/conv1/Conv_output_0: [1, 256, 14, 14] <br>
+                  
+                </td>
+                <td>
+                  
+                    /layer3/layer3.3/relu/Relu_output_0: [1, 256, 14, 14] <br>
+                  
+                </td>
+                <td class="text-end">50,176</td>
+                <td class="text-end">100,352</td>
+                <td class="text-end">0</td>
+              </tr>
+            
+              <tr>
+                <th>79</th>
+                <td>/layer3/layer3.3/conv2/Conv</td>
+                <td>Conv</td>
+                <td>
+                  
+                    /layer3/layer3.3/relu/Relu_output_0: [1, 256, 14, 14] <br>
+                  
+                    onnx::Conv_602: [256, 256, 3, 3] <br>
+                  
+                    onnx::Conv_603: [256] <br>
+                  
+                </td>
+                <td>
+                  
+                    /layer3/layer3.3/conv2/Conv_output_0: [1, 256, 14, 14] <br>
+                  
+                </td>
+                <td class="text-end">231,261,184</td>
+                <td class="text-end">690,432</td>
+                <td class="text-end">590,080</td>
+              </tr>
+            
+              <tr>
+                <th>80</th>
+                <td>/layer3/layer3.3/relu_1/Relu</td>
+                <td>Relu</td>
+                <td>
+                  
+                    /layer3/layer3.3/conv2/Conv_output_0: [1, 256, 14, 14] <br>
+                  
+                </td>
+                <td>
+                  
+                    /layer3/layer3.3/relu_1/Relu_output_0: [1, 256, 14, 14] <br>
+                  
+                </td>
+                <td class="text-end">50,176</td>
+                <td class="text-end">100,352</td>
+                <td class="text-end">0</td>
+              </tr>
+            
+              <tr>
+                <th>81</th>
+                <td>/layer3/layer3.3/conv3/Conv</td>
+                <td>Conv</td>
+                <td>
+                  
+                    /layer3/layer3.3/relu_1/Relu_output_0: [1, 256, 14, 14] <br>
+                  
+                    onnx::Conv_605: [1024, 256, 1, 1] <br>
+                  
+                    onnx::Conv_606: [1024] <br>
+                  
+                </td>
+                <td>
+                  
+                    /layer3/layer3.3/conv3/Conv_output_0: [1, 1024, 14, 14] <br>
+                  
+                </td>
+                <td class="text-end">102,961,152</td>
+                <td class="text-end">514,048</td>
+                <td class="text-end">263,168</td>
+              </tr>
+            
+              <tr>
+                <th>82</th>
+                <td>/layer3/layer3.3/Add</td>
+                <td>Add</td>
+                <td>
+                  
+                    /layer3/layer3.3/conv3/Conv_output_0: [1, 1024, 14, 14] <br>
+                  
+                    /layer3/layer3.2/relu_2/Relu_output_0: [1, 1024, 14, 14] <br>
+                  
+                </td>
+                <td>
+                  
+                    /layer3/layer3.3/Add_output_0: [1, 1024, 14, 14] <br>
+                  
+                </td>
+                <td class="text-end">200,704</td>
+                <td class="text-end">602,112</td>
+                <td class="text-end">0</td>
+              </tr>
+            
+              <tr>
+                <th>83</th>
+                <td>/layer3/layer3.3/relu_2/Relu</td>
+                <td>Relu</td>
+                <td>
+                  
+                    /layer3/layer3.3/Add_output_0: [1, 1024, 14, 14] <br>
+                  
+                </td>
+                <td>
+                  
+                    /layer3/layer3.3/relu_2/Relu_output_0: [1, 1024, 14, 14] <br>
+                  
+                </td>
+                <td class="text-end">200,704</td>
+                <td class="text-end">401,408</td>
+                <td class="text-end">0</td>
+              </tr>
+            
+              <tr>
+                <th>84</th>
+                <td>/layer3/layer3.4/conv1/Conv</td>
+                <td>Conv</td>
+                <td>
+                  
+                    /layer3/layer3.3/relu_2/Relu_output_0: [1, 1024, 14, 14] <br>
+                  
+                    onnx::Conv_608: [256, 1024, 1, 1] <br>
+                  
+                    onnx::Conv_609: [256] <br>
+                  
+                </td>
+                <td>
+                  
+                    /layer3/layer3.4/conv1/Conv_output_0: [1, 256, 14, 14] <br>
+                  
+                </td>
+                <td class="text-end">102,810,624</td>
+                <td class="text-end">513,280</td>
+                <td class="text-end">262,400</td>
+              </tr>
+            
+              <tr>
+                <th>85</th>
+                <td>/layer3/layer3.4/relu/Relu</td>
+                <td>Relu</td>
+                <td>
+                  
+                    /layer3/layer3.4/conv1/Conv_output_0: [1, 256, 14, 14] <br>
+                  
+                </td>
+                <td>
+                  
+                    /layer3/layer3.4/relu/Relu_output_0: [1, 256, 14, 14] <br>
+                  
+                </td>
+                <td class="text-end">50,176</td>
+                <td class="text-end">100,352</td>
+                <td class="text-end">0</td>
+              </tr>
+            
+              <tr>
+                <th>86</th>
+                <td>/layer3/layer3.4/conv2/Conv</td>
+                <td>Conv</td>
+                <td>
+                  
+                    /layer3/layer3.4/relu/Relu_output_0: [1, 256, 14, 14] <br>
+                  
+                    onnx::Conv_611: [256, 256, 3, 3] <br>
+                  
+                    onnx::Conv_612: [256] <br>
+                  
+                </td>
+                <td>
+                  
+                    /layer3/layer3.4/conv2/Conv_output_0: [1, 256, 14, 14] <br>
+                  
+                </td>
+                <td class="text-end">231,261,184</td>
+                <td class="text-end">690,432</td>
+                <td class="text-end">590,080</td>
+              </tr>
+            
+              <tr>
+                <th>87</th>
+                <td>/layer3/layer3.4/relu_1/Relu</td>
+                <td>Relu</td>
+                <td>
+                  
+                    /layer3/layer3.4/conv2/Conv_output_0: [1, 256, 14, 14] <br>
+                  
+                </td>
+                <td>
+                  
+                    /layer3/layer3.4/relu_1/Relu_output_0: [1, 256, 14, 14] <br>
+                  
+                </td>
+                <td class="text-end">50,176</td>
+                <td class="text-end">100,352</td>
+                <td class="text-end">0</td>
+              </tr>
+            
+              <tr>
+                <th>88</th>
+                <td>/layer3/layer3.4/conv3/Conv</td>
+                <td>Conv</td>
+                <td>
+                  
+                    /layer3/layer3.4/relu_1/Relu_output_0: [1, 256, 14, 14] <br>
+                  
+                    onnx::Conv_614: [1024, 256, 1, 1] <br>
+                  
+                    onnx::Conv_615: [1024] <br>
+                  
+                </td>
+                <td>
+                  
+                    /layer3/layer3.4/conv3/Conv_output_0: [1, 1024, 14, 14] <br>
+                  
+                </td>
+                <td class="text-end">102,961,152</td>
+                <td class="text-end">514,048</td>
+                <td class="text-end">263,168</td>
+              </tr>
+            
+              <tr>
+                <th>89</th>
+                <td>/layer3/layer3.4/Add</td>
+                <td>Add</td>
+                <td>
+                  
+                    /layer3/layer3.4/conv3/Conv_output_0: [1, 1024, 14, 14] <br>
+                  
+                    /layer3/layer3.3/relu_2/Relu_output_0: [1, 1024, 14, 14] <br>
+                  
+                </td>
+                <td>
+                  
+                    /layer3/layer3.4/Add_output_0: [1, 1024, 14, 14] <br>
+                  
+                </td>
+                <td class="text-end">200,704</td>
+                <td class="text-end">602,112</td>
+                <td class="text-end">0</td>
+              </tr>
+            
+              <tr>
+                <th>90</th>
+                <td>/layer3/layer3.4/relu_2/Relu</td>
+                <td>Relu</td>
+                <td>
+                  
+                    /layer3/layer3.4/Add_output_0: [1, 1024, 14, 14] <br>
+                  
+                </td>
+                <td>
+                  
+                    /layer3/layer3.4/relu_2/Relu_output_0: [1, 1024, 14, 14] <br>
+                  
+                </td>
+                <td class="text-end">200,704</td>
+                <td class="text-end">401,408</td>
+                <td class="text-end">0</td>
+              </tr>
+            
+              <tr>
+                <th>91</th>
+                <td>/layer3/layer3.5/conv1/Conv</td>
+                <td>Conv</td>
+                <td>
+                  
+                    /layer3/layer3.4/relu_2/Relu_output_0: [1, 1024, 14, 14] <br>
+                  
+                    onnx::Conv_617: [256, 1024, 1, 1] <br>
+                  
+                    onnx::Conv_618: [256] <br>
+                  
+                </td>
+                <td>
+                  
+                    /layer3/layer3.5/conv1/Conv_output_0: [1, 256, 14, 14] <br>
+                  
+                </td>
+                <td class="text-end">102,810,624</td>
+                <td class="text-end">513,280</td>
+                <td class="text-end">262,400</td>
+              </tr>
+            
+              <tr>
+                <th>92</th>
+                <td>/layer3/layer3.5/relu/Relu</td>
+                <td>Relu</td>
+                <td>
+                  
+                    /layer3/layer3.5/conv1/Conv_output_0: [1, 256, 14, 14] <br>
+                  
+                </td>
+                <td>
+                  
+                    /layer3/layer3.5/relu/Relu_output_0: [1, 256, 14, 14] <br>
+                  
+                </td>
+                <td class="text-end">50,176</td>
+                <td class="text-end">100,352</td>
+                <td class="text-end">0</td>
+              </tr>
+            
+              <tr>
+                <th>93</th>
+                <td>/layer3/layer3.5/conv2/Conv</td>
+                <td>Conv</td>
+                <td>
+                  
+                    /layer3/layer3.5/relu/Relu_output_0: [1, 256, 14, 14] <br>
+                  
+                    onnx::Conv_620: [256, 256, 3, 3] <br>
+                  
+                    onnx::Conv_621: [256] <br>
+                  
+                </td>
+                <td>
+                  
+                    /layer3/layer3.5/conv2/Conv_output_0: [1, 256, 14, 14] <br>
+                  
+                </td>
+                <td class="text-end">231,261,184</td>
+                <td class="text-end">690,432</td>
+                <td class="text-end">590,080</td>
+              </tr>
+            
+              <tr>
+                <th>94</th>
+                <td>/layer3/layer3.5/relu_1/Relu</td>
+                <td>Relu</td>
+                <td>
+                  
+                    /layer3/layer3.5/conv2/Conv_output_0: [1, 256, 14, 14] <br>
+                  
+                </td>
+                <td>
+                  
+                    /layer3/layer3.5/relu_1/Relu_output_0: [1, 256, 14, 14] <br>
+                  
+                </td>
+                <td class="text-end">50,176</td>
+                <td class="text-end">100,352</td>
+                <td class="text-end">0</td>
+              </tr>
+            
+              <tr>
+                <th>95</th>
+                <td>/layer3/layer3.5/conv3/Conv</td>
+                <td>Conv</td>
+                <td>
+                  
+                    /layer3/layer3.5/relu_1/Relu_output_0: [1, 256, 14, 14] <br>
+                  
+                    onnx::Conv_623: [1024, 256, 1, 1] <br>
+                  
+                    onnx::Conv_624: [1024] <br>
+                  
+                </td>
+                <td>
+                  
+                    /layer3/layer3.5/conv3/Conv_output_0: [1, 1024, 14, 14] <br>
+                  
+                </td>
+                <td class="text-end">102,961,152</td>
+                <td class="text-end">514,048</td>
+                <td class="text-end">263,168</td>
+              </tr>
+            
+              <tr>
+                <th>96</th>
+                <td>/layer3/layer3.5/Add</td>
+                <td>Add</td>
+                <td>
+                  
+                    /layer3/layer3.5/conv3/Conv_output_0: [1, 1024, 14, 14] <br>
+                  
+                    /layer3/layer3.4/relu_2/Relu_output_0: [1, 1024, 14, 14] <br>
+                  
+                </td>
+                <td>
+                  
+                    /layer3/layer3.5/Add_output_0: [1, 1024, 14, 14] <br>
+                  
+                </td>
+                <td class="text-end">200,704</td>
+                <td class="text-end">602,112</td>
+                <td class="text-end">0</td>
+              </tr>
+            
+              <tr>
+                <th>97</th>
+                <td>/layer3/layer3.5/relu_2/Relu</td>
+                <td>Relu</td>
+                <td>
+                  
+                    /layer3/layer3.5/Add_output_0: [1, 1024, 14, 14] <br>
+                  
+                </td>
+                <td>
+                  
+                    /layer3/layer3.5/relu_2/Relu_output_0: [1, 1024, 14, 14] <br>
+                  
+                </td>
+                <td class="text-end">200,704</td>
+                <td class="text-end">401,408</td>
+                <td class="text-end">0</td>
+              </tr>
+            
+              <tr>
+                <th>98</th>
+                <td>/layer4/layer4.0/conv1/Conv</td>
+                <td>Conv</td>
+                <td>
+                  
+                    /layer3/layer3.5/relu_2/Relu_output_0: [1, 1024, 14, 14] <br>
+                  
+                    onnx::Conv_626: [512, 1024, 1, 1] <br>
+                  
+                    onnx::Conv_627: [512] <br>
+                  
+                </td>
+                <td>
+                  
+                    /layer4/layer4.0/conv1/Conv_output_0: [1, 512, 14, 14] <br>
+                  
+                </td>
+                <td class="text-end">205,621,248</td>
+                <td class="text-end">825,856</td>
+                <td class="text-end">524,800</td>
+              </tr>
+            
+              <tr>
+                <th>99</th>
+                <td>/layer4/layer4.0/relu/Relu</td>
+                <td>Relu</td>
+                <td>
+                  
+                    /layer4/layer4.0/conv1/Conv_output_0: [1, 512, 14, 14] <br>
+                  
+                </td>
+                <td>
+                  
+                    /layer4/layer4.0/relu/Relu_output_0: [1, 512, 14, 14] <br>
+                  
+                </td>
+                <td class="text-end">100,352</td>
+                <td class="text-end">200,704</td>
+                <td class="text-end">0</td>
+              </tr>
+            
+              <tr>
+                <th>100</th>
+                <td>/layer4/layer4.0/conv2/Conv</td>
+                <td>Conv</td>
+                <td>
+                  
+                    /layer4/layer4.0/relu/Relu_output_0: [1, 512, 14, 14] <br>
+                  
+                    onnx::Conv_629: [512, 512, 3, 3] <br>
+                  
+                    onnx::Conv_630: [512] <br>
+                  
+                </td>
+                <td>
+                  
+                    /layer4/layer4.0/conv2/Conv_output_0: [1, 512, 7, 7] <br>
+                  
+                </td>
+                <td class="text-end">231,236,096</td>
+                <td class="text-end">2,485,248</td>
+                <td class="text-end">2,359,808</td>
+              </tr>
+            
+              <tr>
+                <th>101</th>
+                <td>/layer4/layer4.0/relu_1/Relu</td>
+                <td>Relu</td>
+                <td>
+                  
+                    /layer4/layer4.0/conv2/Conv_output_0: [1, 512, 7, 7] <br>
+                  
+                </td>
+                <td>
+                  
+                    /layer4/layer4.0/relu_1/Relu_output_0: [1, 512, 7, 7] <br>
+                  
+                </td>
+                <td class="text-end">25,088</td>
+                <td class="text-end">50,176</td>
+                <td class="text-end">0</td>
+              </tr>
+            
+              <tr>
+                <th>102</th>
+                <td>/layer4/layer4.0/conv3/Conv</td>
+                <td>Conv</td>
+                <td>
+                  
+                    /layer4/layer4.0/relu_1/Relu_output_0: [1, 512, 7, 7] <br>
+                  
+                    onnx::Conv_632: [2048, 512, 1, 1] <br>
+                  
+                    onnx::Conv_633: [2048] <br>
+                  
+                </td>
+                <td>
+                  
+                    /layer4/layer4.0/conv3/Conv_output_0: [1, 2048, 7, 7] <br>
+                  
+                </td>
+                <td class="text-end">102,860,800</td>
+                <td class="text-end">1,176,064</td>
+                <td class="text-end">1,050,624</td>
+              </tr>
+            
+              <tr>
+                <th>103</th>
+                <td>/layer4/layer4.0/downsample/downsample.0/Conv</td>
+                <td>Conv</td>
+                <td>
+                  
+                    /layer3/layer3.5/relu_2/Relu_output_0: [1, 1024, 14, 14] <br>
+                  
+                    onnx::Conv_635: [2048, 1024, 1, 1] <br>
+                  
+                    onnx::Conv_636: [2048] <br>
+                  
+                </td>
+                <td>
+                  
+                    /layer4/layer4.0/downsample/downsample.0/Conv_output_0: [1, 2048, 7, 7] <br>
+                  
+                </td>
+                <td class="text-end">205,621,248</td>
+                <td class="text-end">2,249,728</td>
+                <td class="text-end">2,099,200</td>
+              </tr>
+            
+              <tr>
+                <th>104</th>
+                <td>/layer4/layer4.0/Add</td>
+                <td>Add</td>
+                <td>
+                  
+                    /layer4/layer4.0/conv3/Conv_output_0: [1, 2048, 7, 7] <br>
+                  
+                    /layer4/layer4.0/downsample/downsample.0/Conv_output_0: [1, 2048, 7, 7] <br>
+                  
+                </td>
+                <td>
+                  
+                    /layer4/layer4.0/Add_output_0: [1, 2048, 7, 7] <br>
+                  
+                </td>
+                <td class="text-end">100,352</td>
+                <td class="text-end">301,056</td>
+                <td class="text-end">0</td>
+              </tr>
+            
+              <tr>
+                <th>105</th>
+                <td>/layer4/layer4.0/relu_2/Relu</td>
+                <td>Relu</td>
+                <td>
+                  
+                    /layer4/layer4.0/Add_output_0: [1, 2048, 7, 7] <br>
+                  
+                </td>
+                <td>
+                  
+                    /layer4/layer4.0/relu_2/Relu_output_0: [1, 2048, 7, 7] <br>
+                  
+                </td>
+                <td class="text-end">100,352</td>
+                <td class="text-end">200,704</td>
+                <td class="text-end">0</td>
+              </tr>
+            
+              <tr>
+                <th>106</th>
+                <td>/layer4/layer4.1/conv1/Conv</td>
+                <td>Conv</td>
+                <td>
+                  
+                    /layer4/layer4.0/relu_2/Relu_output_0: [1, 2048, 7, 7] <br>
+                  
+                    onnx::Conv_638: [512, 2048, 1, 1] <br>
+                  
+                    onnx::Conv_639: [512] <br>
+                  
+                </td>
+                <td>
+                  
+                    /layer4/layer4.1/conv1/Conv_output_0: [1, 512, 7, 7] <br>
+                  
+                </td>
+                <td class="text-end">102,785,536</td>
+                <td class="text-end">1,174,528</td>
+                <td class="text-end">1,049,088</td>
+              </tr>
+            
+              <tr>
+                <th>107</th>
+                <td>/layer4/layer4.1/relu/Relu</td>
+                <td>Relu</td>
+                <td>
+                  
+                    /layer4/layer4.1/conv1/Conv_output_0: [1, 512, 7, 7] <br>
+                  
+                </td>
+                <td>
+                  
+                    /layer4/layer4.1/relu/Relu_output_0: [1, 512, 7, 7] <br>
+                  
+                </td>
+                <td class="text-end">25,088</td>
+                <td class="text-end">50,176</td>
+                <td class="text-end">0</td>
+              </tr>
+            
+              <tr>
+                <th>108</th>
+                <td>/layer4/layer4.1/conv2/Conv</td>
+                <td>Conv</td>
+                <td>
+                  
+                    /layer4/layer4.1/relu/Relu_output_0: [1, 512, 7, 7] <br>
+                  
+                    onnx::Conv_641: [512, 512, 3, 3] <br>
+                  
+                    onnx::Conv_642: [512] <br>
+                  
+                </td>
+                <td>
+                  
+                    /layer4/layer4.1/conv2/Conv_output_0: [1, 512, 7, 7] <br>
+                  
+                </td>
+                <td class="text-end">231,236,096</td>
+                <td class="text-end">2,409,984</td>
+                <td class="text-end">2,359,808</td>
+              </tr>
+            
+              <tr>
+                <th>109</th>
+                <td>/layer4/layer4.1/relu_1/Relu</td>
+                <td>Relu</td>
+                <td>
+                  
+                    /layer4/layer4.1/conv2/Conv_output_0: [1, 512, 7, 7] <br>
+                  
+                </td>
+                <td>
+                  
+                    /layer4/layer4.1/relu_1/Relu_output_0: [1, 512, 7, 7] <br>
+                  
+                </td>
+                <td class="text-end">25,088</td>
+                <td class="text-end">50,176</td>
+                <td class="text-end">0</td>
+              </tr>
+            
+              <tr>
+                <th>110</th>
+                <td>/layer4/layer4.1/conv3/Conv</td>
+                <td>Conv</td>
+                <td>
+                  
+                    /layer4/layer4.1/relu_1/Relu_output_0: [1, 512, 7, 7] <br>
+                  
+                    onnx::Conv_644: [2048, 512, 1, 1] <br>
+                  
+                    onnx::Conv_645: [2048] <br>
+                  
+                </td>
+                <td>
+                  
+                    /layer4/layer4.1/conv3/Conv_output_0: [1, 2048, 7, 7] <br>
+                  
+                </td>
+                <td class="text-end">102,860,800</td>
+                <td class="text-end">1,176,064</td>
+                <td class="text-end">1,050,624</td>
+              </tr>
+            
+              <tr>
+                <th>111</th>
+                <td>/layer4/layer4.1/Add</td>
+                <td>Add</td>
+                <td>
+                  
+                    /layer4/layer4.1/conv3/Conv_output_0: [1, 2048, 7, 7] <br>
+                  
+                    /layer4/layer4.0/relu_2/Relu_output_0: [1, 2048, 7, 7] <br>
+                  
+                </td>
+                <td>
+                  
+                    /layer4/layer4.1/Add_output_0: [1, 2048, 7, 7] <br>
+                  
+                </td>
+                <td class="text-end">100,352</td>
+                <td class="text-end">301,056</td>
+                <td class="text-end">0</td>
+              </tr>
+            
+              <tr>
+                <th>112</th>
+                <td>/layer4/layer4.1/relu_2/Relu</td>
+                <td>Relu</td>
+                <td>
+                  
+                    /layer4/layer4.1/Add_output_0: [1, 2048, 7, 7] <br>
+                  
+                </td>
+                <td>
+                  
+                    /layer4/layer4.1/relu_2/Relu_output_0: [1, 2048, 7, 7] <br>
+                  
+                </td>
+                <td class="text-end">100,352</td>
+                <td class="text-end">200,704</td>
+                <td class="text-end">0</td>
+              </tr>
+            
+              <tr>
+                <th>113</th>
+                <td>/layer4/layer4.2/conv1/Conv</td>
+                <td>Conv</td>
+                <td>
+                  
+                    /layer4/layer4.1/relu_2/Relu_output_0: [1, 2048, 7, 7] <br>
+                  
+                    onnx::Conv_647: [512, 2048, 1, 1] <br>
+                  
+                    onnx::Conv_648: [512] <br>
+                  
+                </td>
+                <td>
+                  
+                    /layer4/layer4.2/conv1/Conv_output_0: [1, 512, 7, 7] <br>
+                  
+                </td>
+                <td class="text-end">102,785,536</td>
+                <td class="text-end">1,174,528</td>
+                <td class="text-end">1,049,088</td>
+              </tr>
+            
+              <tr>
+                <th>114</th>
+                <td>/layer4/layer4.2/relu/Relu</td>
+                <td>Relu</td>
+                <td>
+                  
+                    /layer4/layer4.2/conv1/Conv_output_0: [1, 512, 7, 7] <br>
+                  
+                </td>
+                <td>
+                  
+                    /layer4/layer4.2/relu/Relu_output_0: [1, 512, 7, 7] <br>
+                  
+                </td>
+                <td class="text-end">25,088</td>
+                <td class="text-end">50,176</td>
+                <td class="text-end">0</td>
+              </tr>
+            
+              <tr>
+                <th>115</th>
+                <td>/layer4/layer4.2/conv2/Conv</td>
+                <td>Conv</td>
+                <td>
+                  
+                    /layer4/layer4.2/relu/Relu_output_0: [1, 512, 7, 7] <br>
+                  
+                    onnx::Conv_650: [512, 512, 3, 3] <br>
+                  
+                    onnx::Conv_651: [512] <br>
+                  
+                </td>
+                <td>
+                  
+                    /layer4/layer4.2/conv2/Conv_output_0: [1, 512, 7, 7] <br>
+                  
+                </td>
+                <td class="text-end">231,236,096</td>
+                <td class="text-end">2,409,984</td>
+                <td class="text-end">2,359,808</td>
+              </tr>
+            
+              <tr>
+                <th>116</th>
+                <td>/layer4/layer4.2/relu_1/Relu</td>
+                <td>Relu</td>
+                <td>
+                  
+                    /layer4/layer4.2/conv2/Conv_output_0: [1, 512, 7, 7] <br>
+                  
+                </td>
+                <td>
+                  
+                    /layer4/layer4.2/relu_1/Relu_output_0: [1, 512, 7, 7] <br>
+                  
+                </td>
+                <td class="text-end">25,088</td>
+                <td class="text-end">50,176</td>
+                <td class="text-end">0</td>
+              </tr>
+            
+              <tr>
+                <th>117</th>
+                <td>/layer4/layer4.2/conv3/Conv</td>
+                <td>Conv</td>
+                <td>
+                  
+                    /layer4/layer4.2/relu_1/Relu_output_0: [1, 512, 7, 7] <br>
+                  
+                    onnx::Conv_653: [2048, 512, 1, 1] <br>
+                  
+                    onnx::Conv_654: [2048] <br>
+                  
+                </td>
+                <td>
+                  
+                    /layer4/layer4.2/conv3/Conv_output_0: [1, 2048, 7, 7] <br>
+                  
+                </td>
+                <td class="text-end">102,860,800</td>
+                <td class="text-end">1,176,064</td>
+                <td class="text-end">1,050,624</td>
+              </tr>
+            
+              <tr>
+                <th>118</th>
+                <td>/layer4/layer4.2/Add</td>
+                <td>Add</td>
+                <td>
+                  
+                    /layer4/layer4.2/conv3/Conv_output_0: [1, 2048, 7, 7] <br>
+                  
+                    /layer4/layer4.1/relu_2/Relu_output_0: [1, 2048, 7, 7] <br>
+                  
+                </td>
+                <td>
+                  
+                    /layer4/layer4.2/Add_output_0: [1, 2048, 7, 7] <br>
+                  
+                </td>
+                <td class="text-end">100,352</td>
+                <td class="text-end">301,056</td>
+                <td class="text-end">0</td>
+              </tr>
+            
+              <tr>
+                <th>119</th>
+                <td>/layer4/layer4.2/relu_2/Relu</td>
+                <td>Relu</td>
+                <td>
+                  
+                    /layer4/layer4.2/Add_output_0: [1, 2048, 7, 7] <br>
+                  
+                </td>
+                <td>
+                  
+                    /layer4/layer4.2/relu_2/Relu_output_0: [1, 2048, 7, 7] <br>
+                  
+                </td>
+                <td class="text-end">100,352</td>
+                <td class="text-end">200,704</td>
+                <td class="text-end">0</td>
+              </tr>
+            
+              <tr>
+                <th>120</th>
+                <td>/avgpool/GlobalAveragePool</td>
+                <td>GlobalAveragePool</td>
+                <td>
+                  
+                    /layer4/layer4.2/relu_2/Relu_output_0: [1, 2048, 7, 7] <br>
+                  
+                </td>
+                <td>
+                  
+                    /avgpool/GlobalAveragePool_output_0: [1, 2048, 1, 1] <br>
+                  
+                </td>
+                <td class="text-end">102,400</td>
+                <td class="text-end">102,400</td>
+                <td class="text-end">0</td>
+              </tr>
+            
+              <tr>
+                <th>121</th>
+                <td>/Flatten</td>
+                <td>Flatten</td>
+                <td>
+                  
+                    /avgpool/GlobalAveragePool_output_0: [1, 2048, 1, 1] <br>
+                  
+                </td>
+                <td>
+                  
+                    /Flatten_output_0: [1, 2048] <br>
+                  
+                </td>
+                <td class="text-end">0</td>
+                <td class="text-end">0</td>
+                <td class="text-end">0</td>
+              </tr>
+            
+              <tr>
+                <th>122</th>
+                <td>/fc/Gemm</td>
+                <td>Gemm</td>
+                <td>
+                  
+                    /Flatten_output_0: [1, 2048] <br>
+                  
+                    fc.weight: [1000, 2048] <br>
+                  
+                    fc.bias: [1000] <br>
+                  
+                </td>
+                <td>
+                  
+                    prob: [1, 1000] <br>
+                  
+                </td>
+                <td class="text-end">4,097,000</td>
+                <td class="text-end">2,052,048</td>
+                <td class="text-end">2,049,000</td>
+              </tr>
+            
+          </tbody>
+        </table>
+      </div>
+    </main>
+  </div>
+</div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js" integrity="sha384-uO3SXW5IuS1ZpFPKugNNWqTZRRglnUJK6UAZ/gxOX80nxEkN9NcGZTftn6RzhGWE" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.2.1/dist/chart.umd.min.js" integrity="sha384-gdQErvCNWvHQZj6XZM0dNsAoY4v+j5P1XDpNkcM3HJG1Yx04ecqIHk7+4VBOCHOG" crossorigin="anonymous"></script>
+    <script src="assets/common.js"></script>
+  </body>
+</html>
