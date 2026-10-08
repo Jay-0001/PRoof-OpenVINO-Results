@@ -48,6 +48,28 @@ The report includes:
 - a bubble-style roofline view in which position represents arithmetic intensity and attained performance, while bubble size reflects execution-time contribution;
 - the structured PRoof JSON report and execution log used to generate the views.
 
+## Report previews
+
+Each screenshot below links to the corresponding interactive HTML view in this repository.
+
+### Run summary
+
+[![PRoof summary showing the ResNet-50 OpenVINO run configuration and hardware-performance results](screenshots/summary.png)](results/resnet50-openvino-gpu/index.html)
+
+The summary records the model, backend configuration, precision, calibrated hardware performance, and tested batch size.
+
+### ONNX model analysis
+
+[![PRoof model-analysis view showing ResNet-50 ONNX layers and tensor shapes](screenshots/model-analysis.png)](results/resnet50-openvino-gpu/model.html)
+
+The model-analysis view lists the ONNX graph nodes, operation types, inputs, outputs, and inferred tensor shapes.
+
+### OpenVINO layer roofline
+
+[![PRoof layer-performance view showing the ResNet-50 bubble roofline and layer details](screenshots/layer-roofline.png)](results/resnet50-openvino-gpu/layer-1.html)
+
+The layer-performance view places profiled OpenVINO backend layers by arithmetic intensity and attained performance; bubble size represents execution-time contribution. The table below the chart provides the corresponding per-layer measurements.
+
 ## Attribution
 
 The profiling framework and generated viewer originate from:
